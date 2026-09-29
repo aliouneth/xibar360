@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
-    <title>{{ config('app.name', 'SunuNews') }} - @yield('title', '')</title>
+    <title>{{ config('app.name', 'Xibar360') }} - @yield('title', '')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         :root { --senegal-red: #DC143C; --senegal-green: #228B22; --senegal-yellow: #FFD700; --senegal-dark: #1a1a2e; }
@@ -34,7 +34,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-24">
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <img src="{{ asset('images/logo.png') }}" alt="Xibar360" class="h-[5.625rem] w-auto">
+                    <img src="{{ asset('images/logo.png') }}" alt="Xibar360" class="h-[5.8126359375rem] w-auto">
                 </a>
                 
                 <nav class="hidden md:flex items-center space-x-6">
@@ -84,7 +84,7 @@
         <div class="max-w-7xl mx-auto px-4">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                 <div>
-                    <h3 class="text-xl font-bold mb-3">SunuNews</h3>
+                    <h3 class="text-xl font-bold mb-3">Xibar360</h3>
                     <p class="text-gray-400 text-sm">Votre source d'information privilégiée pour l'actualité sénégalaise et internationale.</p>
                 </div>
                 <div>
@@ -114,7 +114,7 @@
                 </div>
             </div>
             <div class="border-t border-gray-700 pt-4 text-center text-sm text-gray-400">
-                <p>&copy; {{ date('Y') }} SunuNews. {{ __('messages.footer.rights') }}</p>
+                <p>&copy; 2026 Xibar360. Tous droits réservés.</p>
             </div>
         </div>
     </footer>

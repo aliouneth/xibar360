@@ -1,13 +1,13 @@
 @extends('layouts.guest')
 
-@section('title', 'Inscription - SunuNews')
+@section('title', 'Inscription - Xibar360')
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-900 via-red-800 to-green-800 py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-2xl p-8">
         <div>
             <h2 class="mt-6 text-center text-3xl font-bold text-gray-900">Créer un compte</h2>
-            <p class="mt-2 text-center text-sm text-gray-600">Rejoignez SunuNews</p>
+            <p class="mt-2 text-center text-sm text-gray-600">Rejoignez Xibar360</p>
         </div>
         @if ($errors->any())
             <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Gestion des Articles - SunuNews Admin')
+@section('title', 'Gestion des Articles - Xibar360 Admin')
 
 @section('header_ad')
     <div class="bg-senegal-green py-1">

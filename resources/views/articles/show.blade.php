@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $article->getTitle($locale) . ' | SunuNews')
+@section('title', $article->getTitle($locale) . ' | Xibar360')
 
 @section('header_ad')
     @foreach($headerAds as $ad)

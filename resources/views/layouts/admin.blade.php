@@ -11,7 +11,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
-                <img src="{{ asset('images/logo.png') }}" alt="Xibar360" class="h-[4.5rem] w-auto">
+                <img src="{{ asset('images/logo.png') }}" alt="Xibar360" class="h-[60px] w-auto" style="height: 60px !important;">
             </a>
             <div class="navbar-nav ms-auto d-flex flex-row align-items-center gap-3">
                 <a class="nav-link" href="{{ route('admin.stats') }}">{{ __('Stats') }}</a>

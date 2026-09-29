@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('Home') | __('SunuNews'))
+@section('title', __('Home') | __('Xibar360'))
 
 @section('content')
 <div class="row">

@@ -32,6 +32,7 @@ class PublicController extends Controller
         $categories = Category::where('is_active', true)->get();
         $headerAds = Ad::where('zone', 'header')->where('is_active', true)->get();
         $sidebarAds = Ad::where('zone', 'sidebar')->where('is_active', true)->get();
+        $inlineAds = Ad::where('zone', 'inline')->where('is_active', true)->get();
 
         // Each block runs its own query. Filtering one shared paginator in the
         // view starved most blocks, so freshly imported stories never showed.
@@ -55,7 +56,7 @@ class PublicController extends Controller
             ->orderByDesc('publication_date')->orderByDesc('id')
             ->paginate(12);
 
-        return view('home', compact('featured', 'categories', 'sections', 'localPicks', 'latest', 'headerAds', 'sidebarAds', 'locale'));
+        return view('home', compact('featured', 'categories', 'sections', 'localPicks', 'latest', 'headerAds', 'sidebarAds', 'inlineAds', 'locale'));
     }
 
     public function show(Article $article)

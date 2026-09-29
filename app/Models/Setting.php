@@ -8,6 +8,8 @@ class Setting extends Model
 {
     protected $table = 'settings';
 
+    protected $fillable = ['key', 'value'];
+
     public static function getByKey($key)
     {
         return static::where('key', $key)->value('value');

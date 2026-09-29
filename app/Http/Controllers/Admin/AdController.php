@@ -22,7 +22,13 @@ class AdController extends Controller
 
     public function store(AdRequest $request)
     {
-        Ad::create($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('ads', 'public');
+        }
+
+        Ad::create($data);
         return back()->with('success', 'Ad created.');
     }
 
@@ -33,7 +39,13 @@ class AdController extends Controller
 
     public function update(AdRequest $request, Ad $ad)
     {
-        $ad->update($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('ads', 'public');
+        }
+
+        $ad->update($data);
         return back()->with('success', 'Ad updated.');
     }
 

@@ -1,12 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Accueil - SunuNews')
+@section('title', 'Accueil')
 
 @section('header_ad')
     @foreach($headerAds as $ad)
-        <div class="bg-gray-200 py-2 text-center">
-            <a href="{{ $ad->target_url ?? '#' }}" class="text-senegal-red font-bold text-sm">{{ $ad->title }}</a>
-        </div>
+        <a href="{{ $ad->target_url ?? '#' }}" class="block bg-white rounded-xl shadow-md p-4 text-center">
+            @if($ad->html_snippet)
+                {!! $ad->html_snippet !!}            
+            @elseif($ad->image)
+                <img src="{{ asset('storage/' . $ad->image) }}" alt="{{ $ad->title }}" class="max-h-32 mx-auto mb-2">
+                @if($ad->description)
+                    <p class="text-sm text-gray-600">{{ $ad->description }}</p>
+                @endif
+            @endif
+        </a>
     @endforeach
 @endsection
 
@@ -45,6 +52,26 @@
                 </a>
             @endforeach
         </div>
+    </div>
+    @endif
+
+    {{-- Inline Ads --}}
+    @if($inlineAds->isNotEmpty())
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        @foreach($inlineAds as $ad)
+            <a href="{{ $ad->target_url ?? '#' }}" class="block bg-white rounded-xl shadow-md p-4 text-center my-4">
+                @if($ad->html_snippet)
+                    {!! $ad->html_snippet !!}                        
+                @elseif($ad->image)
+                    <img src="{{ asset('storage/' . $ad->image) }}" alt="{{ $ad->title }}" class="max-h-48 mx-auto mb-2">
+                    @if($ad->description)
+                        <p class="text-sm text-gray-600">{{ $ad->description }}</p>
+                    @endif
+                @else
+                    <span class="text-senegal-red font-bold">{{ $ad->title }}</span>
+                @endif
+            </a>
+        @endforeach
     </div>
     @endif
 
@@ -147,6 +174,25 @@
             {{-- Column 3: MONDE, PEOPLE, Local --}}
             <div class="lg:col-span-1 space-y-8">
                 <div class="lg:col-span-1 space-y-8">
+                    {{-- Sidebar Ads at top --}}
+                    @if($sidebarAds->isNotEmpty())
+                    <div class="space-y-4">
+                        @foreach($sidebarAds as $ad)
+                            <a href="{{ $ad->target_url ?? '#' }}" class="block bg-white rounded-xl shadow-md p-4 text-center">
+                                @if($ad->html_snippet)
+                                    {!! $ad->html_snippet !!}                        
+                                @elseif($ad->image)
+                                    <img src="{{ asset('storage/' . $ad->image) }}" alt="{{ $ad->title }}" class="max-h-32 mx-auto mb-2">
+                                    @if($ad->description)
+                                        <p class="text-sm text-gray-600">{{ $ad->description }}</p>
+                                    @endif
+                                @else
+                                    <span class="text-senegal-red font-bold">{{ $ad->title }}</span>
+                                @endif
+                            </a>
+                        @endforeach
+                    </div>
+                    @endif
                     @foreach(['MONDE', 'PEOPLE'] as $catName)
                         @php($cat = $categories->firstWhere('name_fr', $catName))
                         @if($cat)
@@ -186,17 +232,5 @@
                     @endif
                 </div>
             </div>
-    </div>
-
-    {{-- Sidebar Ads --}}
-        @if($sidebarAds->isNotEmpty())
-        <div class="mt-8 space-y-4">
-            @foreach($sidebarAds as $ad)
-                <div class="bg-white rounded-xl shadow-md p-4 text-center">
-                    <a href="{{ $ad->target_url ?? '#' }}" class="text-senegal-red font-bold">{{ $ad->title }}</a>
-                </div>
-            @endforeach
-        </div>
-        @endif
-    </div>
+</div>
 @endsection

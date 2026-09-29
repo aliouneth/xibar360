@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('Search Results') . ' | SunuNews')
+@section('title', __('Search Results') . ' | Xibar360')
 
 @section('content')
 <h1>{{ __('Search Results') }}</h1>

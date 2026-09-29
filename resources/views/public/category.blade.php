@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', __('Category') . ' | SunuNews')
+@section('title', __('Category') . ' | Xibar360')
 
 @section('content')
 <h1>{{ $category->name_fr ?? $category->name_en }}</h1>

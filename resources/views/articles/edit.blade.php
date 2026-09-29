@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Modifier l\'Article - SunuNews Admin')
+@section('title', 'Modifier l\'Article - Xibar360 Admin')
 
 @section('header_ad')
     <div class="bg-senegal-green py-1">
