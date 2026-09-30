@@ -23,7 +23,10 @@ class ArticleController extends Controller
         if ($request->has('source_type')) {
             $query->where('source_type', $request->source_type);
         }
-        if ($request->has('search')) {
+        if ($request->has('status') && $request->status !== '') {
+            $query->where('is_published', $request->status);
+        }
+        if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
                 $q->where('title_fr', 'like', "%{$search}%")

@@ -9,26 +9,33 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
+        <div class="container-fluid px-3">
             <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
                 <img src="{{ asset('images/logo.png') }}" alt="Xibar360" class="h-[60px] w-auto" style="height: 60px !important;">
             </a>
-            <div class="navbar-nav ms-auto d-flex flex-row align-items-center gap-3">
-                <a class="nav-link" href="{{ route('admin.stats') }}">{{ __('Stats') }}</a>
-                <a class="nav-link" href="{{ route('admin.articles.index') }}">{{ __('Articles') }}</a>
-                <a class="nav-link" href="{{ route('admin.categories.index') }}">{{ __('Categories') }}</a>
-                <a class="nav-link" href="{{ route('admin.ads.index') }}">{{ __('Ads') }}</a>
-                <a class="nav-link" href="{{ route('admin.users.index') }}">{{ __('Users') }}</a>
-                <a class="nav-link" href="{{ route('admin.settings.index') }}">{{ __('Settings') }}</a>
-                <a class="nav-link" href="{{ route('home') }}">{{ __('View Site') }}</a>
-                {{-- logout is registered as POST only, so it must be a form --}}
-                <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                    @csrf
-                    <button type="submit" class="btn btn-link nav-link">{{ __('Logout') }}</button>
-                </form>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar" aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="adminNavbar">
+                <ul class="navbar-nav ms-auto flex-column flex-md-row align-items-center gap-2">
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.stats') }}">{{ __('Stats') }}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.articles.index') }}">{{ __('Articles') }}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.categories.index') }}">{{ __('Categories') }}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.ads.index') }}">{{ __('Ads') }}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.users.index') }}">{{ __('Users') }}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('admin.settings.index') }}">{{ __('Settings') }}</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">{{ __('View Site') }}</a></li>
+                    <li class="nav-item">
+                        <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-link nav-link p-0">{{ __('Logout') }}</button>
+                        </form>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <div class="container mt-4">
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
