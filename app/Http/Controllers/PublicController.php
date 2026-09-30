@@ -29,6 +29,8 @@ class PublicController extends Controller
                 ->take(5)->get();
         }
 
+        $featuredIds = $featured->pluck('id')->toArray();
+
         $categories = Category::where('is_active', true)->get();
         $headerAds = Ad::where('zone', 'header')->where('is_active', true)->get();
         $sidebarAds = Ad::where('zone', 'sidebar')->where('is_active', true)->get();
@@ -53,6 +55,7 @@ class PublicController extends Controller
         // earlier but picked up now cannot outrank genuinely newer news.
         $latest = Article::with(['category', 'author'])
             ->where('is_published', true)
+            ->whereNotIn('id', $featuredIds)
             ->orderByDesc('publication_date')->orderByDesc('id')
             ->paginate(12);
 
