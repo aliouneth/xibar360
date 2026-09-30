@@ -22,7 +22,7 @@
     @if($featured->isNotEmpty())
     <div class="max-w-7xl mx-auto px-4 py-8">
         {{-- Featured Slider --}}
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 mb-12">
             @foreach($featured->take(2) as $article)
                 <a href="{{ route('articles.show', $article) }}" class="card-hover bg-white rounded-xl shadow-md overflow-hidden block">
                     @if($article->thumbnail)
@@ -80,7 +80,7 @@
         @if($latest->isEmpty())
             <p class="text-gray-500">{{ __('Aucun article pour le moment.') }}</p>
         @else
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($latest as $article)
                     <a href="{{ route('articles.show', $article) }}"
                        class="card-hover bg-white rounded-xl shadow-md overflow-hidden flex flex-col">
@@ -118,7 +118,7 @@
 
     {{-- Three Column Layout --}}
     <div class="max-w-7xl mx-auto px-4 pb-12">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {{-- Column 1: POLITIQUE, ÉCONOMIE --}}
             <div class="lg:col-span-1 space-y-8">
                 @foreach(['POLITIQUE', 'ÉCONOMIE'] as $catName)

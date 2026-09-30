@@ -47,7 +47,7 @@
                 
                 <div class="flex items-center space-x-3">
                     <form action="{{ route('search.results') }}" method="GET" class="hidden sm:flex">
-                        <input type="text" name="q" placeholder="{{ __('messages.search_placeholder') }}" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-senegal-red text-sm w-48">
+                        <input type="text" name="q" placeholder="Rechercher..." class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-senegal-red text-sm w-48">
                         <button type="submit" class="bg-senegal-red text-white px-3 py-2 rounded-lg ml-1 text-sm">🔍</button>
                     </form>
                     
