@@ -11,6 +11,11 @@ class Category extends Model
 
     protected $fillable = ['name_fr', 'name_en', 'slug', 'icon', 'description', 'is_active'];
 
+    public function getRouteKeyName(): string
+    {
+        return 'name_fr';
+    }
+
     public function articles(): HasMany
     {
         return $this->hasMany(Article::class);

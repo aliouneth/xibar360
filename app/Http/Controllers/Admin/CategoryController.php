@@ -15,13 +15,23 @@ class CategoryController extends Controller
         return view('admin.categories.index', compact('categories'));
     }
 
-    public function store(Request $request)
+    public function create()
     {
-        Category::create($request->all());
+        return view('admin.categories.create');
+    }
+
+    public function store(CategoryRequest $request)
+    {
+        Category::create($request->validated());
         return back()->with('success', 'Category created.');
     }
 
-    public function update(Request $request, Category $category)
+    public function edit(Category $category)
+    {
+        return view('admin.categories.edit', compact('category'));
+    }
+
+    public function update(CategoryRequest $request, Category $category)
     {
         $category->update($request->all());
         return back()->with('success', 'Category updated.');

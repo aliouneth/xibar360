@@ -70,8 +70,6 @@
                                 <div class="flex items-center">
                                     @if($article->image)
                                         <img src="{{ $article->image }}" alt="{{ $article->title }}" class="w-10 h-10 rounded object-cover mr-3">
-                                    @else
-                                        <div class="w-10 h-10 bg-gray-200 rounded flex items-center justify-center mr-3 text-gray-400 text-xs">📰</div>
                                     @endif
                                     <div>
                                         <div class="font-medium text-gray-900 text-sm">{{ Str::limit($article->title_fr ?? $article->title, 50) }}</div>

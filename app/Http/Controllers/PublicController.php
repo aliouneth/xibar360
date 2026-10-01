@@ -98,7 +98,7 @@ class PublicController extends Controller
     {
         $locale = session('locale', app()->getLocale());
         $articles = Article::where('category_id', $category->id)
-            ->where('is_published', true)->latest()->paginate(12);
+            ->where('is_published', true)->latest()->paginate(24);
         $latestArticles = Article::where('is_published', true)->latest()->take(6)->get();
         $headerAds = Ad::where('zone', 'header')->where('is_active', true)->get();
         $sidebarAds = Ad::where('zone', 'sidebar')->where('is_active', true)->get();

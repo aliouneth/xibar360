@@ -29,10 +29,6 @@
                         <img src="{{ $article->thumbnail }}" alt=""
                              class="h-64 w-full object-cover"
                              onerror="this.style.display='none'">
-                    @else
-                        <div class="h-64 bg-gray-200 flex items-center justify-center text-gray-400 text-6xl">
-                            📰
-                        </div>
                     @endif
                     <div class="p-6">
                         <div class="flex items-center gap-2 mb-3 flex-wrap">

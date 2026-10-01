@@ -40,10 +40,10 @@
                 
                 <nav class="hidden md:flex items-center space-x-6">
                     <a href="{{ route('home') }}" class="nav-link text-gray-700 hover:text-senegal-red font-medium transition-colors">Accueil</a>
-                    <a href="#" class="nav-link text-gray-700 hover:text-senegal-red font-medium transition-colors">Politique</a>
-                    <a href="#" class="nav-link text-gray-700 hover:text-senegal-red font-medium transition-colors">Économie</a>
-                    <a href="#" class="nav-link text-gray-700 hover:text-senegal-red font-medium transition-colors">Sport</a>
-                    <a href="#" class="nav-link text-gray-700 hover:text-senegal-red font-medium transition-colors">Afrique</a>
+                    <a href="{{ route('category.show', ['category' => 'POLITIQUE']) }}" class="nav-link text-gray-700 hover:text-senegal-red font-medium transition-colors">Politique</a>
+                    <a href="{{ route('category.show', ['category' => 'ÉCONOMIE']) }}" class="nav-link text-gray-700 hover:text-senegal-red font-medium transition-colors">Économie</a>
+                    <a href="{{ route('category.show', ['category' => 'SPORT']) }}" class="nav-link text-gray-700 hover:text-senegal-red font-medium transition-colors">Sport</a>
+                    <a href="{{ route('category.show', ['category' => 'AFRIQUE']) }}" class="nav-link text-gray-700 hover:text-senegal-red font-medium transition-colors">Afrique</a>
                 </nav>
                 
                 <div class="flex items-center space-x-3">
