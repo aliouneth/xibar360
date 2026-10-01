@@ -62,7 +62,7 @@ class PublicController extends Controller
             ->where('is_published', true)
             ->whereNotIn('id', $featuredIds)
             ->orderByDesc('publication_date')->orderByDesc('id')
-            ->paginate(12);
+            ->paginate(24);
 
         return view('home', compact('featured', 'categories', 'sections', 'localPicks', 'latest', 'headerAds', 'sidebarAds', 'inlineAds', 'locale'));
     }

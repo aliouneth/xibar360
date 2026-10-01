@@ -145,32 +145,32 @@ class StatsController extends Controller
             'totalCards' => [
                 [
                     'label' => __('Total Articles'),
-                    'value' => number_format($published + $drafts),
+                    'value' => $published + $drafts,
                     'sub' => $published.' '.__('published'),
                 ],
                 [
                     'label' => __('Imported'),
-                    'value' => number_format($imported),
+                    'value' => $imported,
                     'sub' => ($published + $drafts - $imported).' '.__('local'),
                 ],
                 [
                     'label' => __('Drafts'),
-                    'value' => number_format($drafts),
+                    'value' => $drafts,
                     'sub' => $featured.' '.__('featured'),
                 ],
                 [
                     'label' => __('Users'),
-                    'value' => number_format(User::count()),
+                    'value' => User::count(),
                     'sub' => $byRole->pluck('total')->sum().' '.__('with a role'),
                 ],
                 [
                     'label' => __('Categories'),
-                    'value' => number_format(Category::count()),
+                    'value' => Category::count(),
                     'sub' => $byLanguage->keys()->count().' '.__('languages'),
                 ],
                 [
                     'label' => __('Ads'),
-                    'value' => number_format(Ad::count()),
+                    'value' => Ad::count(),
                     'sub' => Ad::where('is_active', true)->count().' '.__('active'),
                 ],
             ],
@@ -208,22 +208,22 @@ class StatsController extends Controller
         return [
             [
                 'label' => __('Page views'),
-                'value' => number_format($visitors['windowViews']),
+                'value' => $visitors['windowViews'],
                 'sub' => number_format($visitors['totalViews']).' '.__('all time'),
             ],
             [
                 'label' => __('Unique visitors'),
-                'value' => number_format($visitors['windowVisitors']),
+                'value' => $visitors['windowVisitors'],
                 'sub' => number_format($visitors['totalVisitors']).' '.__('all time'),
             ],
             [
                 'label' => __('Today'),
-                'value' => number_format($visitors['todayViews']),
+                'value' => $visitors['todayViews'],
                 'sub' => $visitors['todayVisitors'].' '.__('visitors'),
             ],
             [
                 'label' => __('Article views'),
-                'value' => number_format($visitors['articleViews']),
+                'value' => $visitors['articleViews'],
                 'sub' => __('of total views'),
             ],
             [

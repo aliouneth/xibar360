@@ -120,25 +120,3 @@
         </div>
     </div>
 @endsection
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900 transition-colors" title="Supprimer">🗑️</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-
-        {{-- Pagination --}}
-        <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
-            <p class="text-sm text-gray-500">
-                Affichage de {{ $articles->firstItem() ?? 0 }} à {{ $articles->lastItem() ?? 0 }} sur {{ $articles->total() }} articles
-            </p>
-            <div class="flex space-x-1">
-                {{ $articles->links() }}
-            </div>
-        </div>
-    </div>
-@endsection
