@@ -15,7 +15,10 @@ class PublicController extends Controller
         $locale = session('locale', app()->getLocale());
 
         $featured = Article::with('category')
-            ->where('is_published', true)->where('is_featured', true)
+            ->where('is_published', true)
+            ->where('is_featured', true)
+            ->whereNotNull('thumbnail')
+            ->where('thumbnail', '!=', '')
             ->orderByDesc('publication_date')->orderByDesc('id')
             ->take(5)->get();
 
@@ -25,6 +28,8 @@ class PublicController extends Controller
         if ($featured->isEmpty()) {
             $featured = Article::with('category')
                 ->where('is_published', true)
+                ->whereNotNull('thumbnail')
+                ->where('thumbnail', '!=', '')
                 ->orderByDesc('publication_date')->orderByDesc('id')
                 ->take(5)->get();
         }
