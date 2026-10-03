@@ -31,9 +31,9 @@ class AuthenticatedSessionController extends Controller
             ]);
         }
 
-        $request->session()->regenerate();
-
         Auth::login($user);
+
+        $request->session()->save();
 
         return redirect()->intended('/');
     }

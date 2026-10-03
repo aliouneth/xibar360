@@ -14,6 +14,8 @@ class PageView extends Model
         'user_id',
         'referer_host',
         'device',
+        'country',
+        'region',
     ];
 
     public function article(): BelongsTo

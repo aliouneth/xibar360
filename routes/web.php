@@ -27,9 +27,14 @@ Route::get('/{lang}/category/{category}', [PublicController::class, 'localizedCa
 Route::get('/lang/{locale}', function ($locale) {
     if (in_array($locale, ['fr', 'en'])) {
         session(['locale' => $locale]);
-        app()->setLocale($locale);
     }
-    return redirect()->back();
+    $target = url()->previous();
+
+    if ($target === url()->current()) {
+        $target = url('/');
+    }
+
+    return redirect()->to($target);
 })->name('lang.switch');
 
 // Auth Routes

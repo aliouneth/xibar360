@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\PageView;
 use Closure;
+use GeoIp2\Database\Reader;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -74,6 +75,10 @@ class TrackPageView
 
         $article = $request->route('article');
 
+        // GeoIP lookup
+        $country = $this->lookupCountry($request);
+        $region = $this->lookupRegion($request->ip(), $country);
+
         try {
             PageView::create([
                 'article_id' => $article instanceof \App\Models\Article ? $article->id : null,
@@ -82,11 +87,72 @@ class TrackPageView
                 'user_id' => $request->user()?->id,
                 'referer_host' => $refererHost ? mb_substr($refererHost, 0, 191) : null,
                 'device' => $this->device($request),
+                'country' => $country,
+                'region' => $region,
             ]);
         } catch (\Throwable $e) {
-            // Audience tracking must never break a page render.
             report($e);
         }
+    }
+
+    /**
+     * Lookup country code from IP
+     */
+    private function lookupCountry(Request $request): ?string
+    {
+        $ip = $request->ip();
+
+        // 1. Check Cloudflare header (available when behind Cloudflare)
+        $cfCountry = $request->header('cf-ipcountry');
+        if ($cfCountry) {
+            return strtoupper($cfCountry);
+        }
+
+        // 2. Try local MaxMind database if available and geoip2 package is installed
+        $dbPath = config('geoip.database_path', storage_path('app/geoip/GeoLite2-Country.mmdb'));
+        if (file_exists($dbPath) && class_exists(\GeoIp2\Database\Reader::class)) {
+            try {
+                $reader = new \GeoIp2\Database\Reader($dbPath);
+                $record = $reader->country($request->ip());
+                return $record->country->isoCode;
+            } catch (\Throwable $e) {
+                // Fall through
+            }
+        }
+
+        return null;
+    }
+
+    private function lookupRegion(string $ip, ?string $country): ?string
+    {
+        if (!$country) {
+            return null;
+        }
+
+        $dbPath = config('geoip.city_database_path', storage_path('app/geoip/GeoLite2-City.mmdb'));
+        if (file_exists($dbPath) && class_exists(\GeoIp2\Database\Reader::class)) {
+            try {
+                $reader = new \GeoIp2\Database\Reader($dbPath);
+                $record = $reader->city($ip);
+                return $record->mostSpecificSubdivision->isoCode ?? $record->country->isoCode;
+            } catch (\Throwable $e) {
+                // Ignore
+            }
+        }
+
+        return null;
+    }
+
+    private function isPrivateIp(string $ip): bool
+    {
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+            $long = ip2long($ip);
+            return ($long >= ip2long('10.0.0.0') && $long <= ip2long('10.255.255.255')) ||
+                   ($long >= ip2long('172.16.0.0') && $long <= ip2long('172.31.255.255')) ||
+                   ($long >= ip2long('192.168.0.0') && $long <= ip2long('192.168.255.255')) ||
+                   ($long >= ip2long('127.0.0.0') && $long <= ip2long('127.255.255.255'));
+        }
+        return false;
     }
 
     /**

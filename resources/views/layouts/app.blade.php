@@ -55,7 +55,9 @@
                     <div class="flex items-center border rounded-lg overflow-hidden">
                         <a href="{{ route('lang.switch', ['locale' => 'fr']) }}" class="px-3 py-2 text-sm font-bold {{ app()->getLocale() === 'fr' ? 'bg-senegal-red text-white' : 'bg-white text-gray-700' }}">FR</a>
                         <div class="w-px h-6 bg-gray-300"></div>
-                        <a href="{{ route('lang.switch', ['locale' => 'en']) }}" class="px-3 py-2 text-sm font-bold {{ app()->getLocale() === 'en' ? 'bg-senegal-red text-white' : 'bg-white text-gray-700' }}">EN</a>
+                        <button type="button" data-xibar360-translate="ar" class="px-3 py-2 text-sm font-bold bg-white text-gray-700 hover:bg-gray-100" title="Traduire cette page en arabe dans votre navigateur">عربي</button>
+                        <div class="w-px h-6 bg-gray-300"></div>
+                        <button type="button" data-xibar360-translate="en" class="px-3 py-2 text-sm font-bold bg-white text-gray-700 hover:bg-gray-100" title="Traduire cette page en anglais dans votre navigateur">EN</button>
                     </div>
                     
                     @auth
@@ -119,6 +121,111 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        (function () {
+            var buttons = document.querySelectorAll('[data-xibar360-translate]');
+
+            if (!buttons.length) {
+                return;
+            }
+
+            function notice(message) {
+                var box = document.createElement('div');
+                box.setAttribute('role', 'status');
+                box.textContent = message;
+                box.style.cssText = 'position:fixed;z-index:9999;left:50%;bottom:1.5rem;transform:translateX(-50%);max-width:90vw;padding:.75rem 1rem;border-radius:.5rem;background:#1a1a2e;color:#fff;font-size:.875rem;line-height:1.4;box-shadow:0 10px 25px rgba(0,0,0,.2);';
+                document.body.appendChild(box);
+                window.setTimeout(function () { box.remove(); }, 9000);
+            }
+
+            function setBusy(target, busy) {
+                var list = document.querySelectorAll('[data-xibar360-translate="' + target + '"]');
+
+                for (var i = 0; i < list.length; i++) {
+                    list[i].classList.toggle('opacity-50', busy);
+                    list[i].classList.toggle('pointer-events-none', busy);
+                }
+            }
+
+            function translate(target) {
+                if (window.__xibar360Translated) {
+                    window.location.reload();
+                    return;
+                }
+
+                var mount = document.getElementById('xibar360-google-translate');
+
+                if (!mount) {
+                    mount = document.createElement('div');
+                    mount.id = 'xibar360-google-translate';
+                    mount.style.cssText = 'position:fixed;left:-9999px;top:-9999px;';
+                    document.body.appendChild(mount);
+                }
+
+                window.__xibar360Translated = target;
+                setBusy(target, true);
+                notice('Traduction en cours...');
+
+                function apply() {
+                    var select = mount.querySelector('.goog-te-combo');
+
+                    if (!select) {
+                        return false;
+                    }
+
+                    select.value = target;
+                    select.dispatchEvent(new Event('change', { bubbles: true }));
+                    return true;
+                }
+
+                window.googleTranslateElementInit = function () {
+                    new google.translate.TranslateElement({
+                        pageLanguage: document.documentElement.getAttribute('lang') || 'fr',
+                        includedLanguages: 'ar,en',
+                        autoDisplay: false,
+                    }, 'xibar360-google-translate');
+
+                    var attempts = 0;
+                    var timer = window.setInterval(function () {
+                        attempts += 1;
+
+                        if (apply()) {
+                            window.clearInterval(timer);
+                            setBusy(target, false);
+                            document.documentElement.setAttribute('lang', target);
+                            document.documentElement.setAttribute('dir', target === 'ar' ? 'rtl' : 'ltr');
+                            notice('Page traduite en ' + (target === 'ar' ? 'arabe' : 'anglais') + '.');
+                            return;
+                        }
+
+                        if (attempts > 20) {
+                            window.clearInterval(timer);
+                            setBusy(target, false);
+                            document.documentElement.setAttribute('lang', target);
+                            document.documentElement.setAttribute('dir', target === 'ar' ? 'rtl' : 'ltr');
+                            notice('Utilisez la traduction de votre navigateur.');
+                        }
+                    }, 250);
+                };
+
+                var script = document.createElement('script');
+                script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+                script.async = true;
+                script.onerror = function () {
+                    setBusy(target, false);
+                    notice('Traduction Google indisponible. Utilisez la traduction de votre navigateur.');
+                };
+                document.head.appendChild(script);
+            }
+
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].addEventListener('click', function () {
+                    translate(this.getAttribute('data-xibar360-translate'));
+                });
+            }
+        })();
+    </script>
 
     @yield('scripts')
 </body>

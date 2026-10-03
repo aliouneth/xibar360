@@ -196,6 +196,7 @@ class StatsController extends Controller
             'ads' => $ads,
             'sourceHealth' => $sourceHealth,
             'lastRefresh' => Cache::get('news-last-refresh'),
+            'countries' => $visitors['countries'] ?? [],
         ]);
     }
 
@@ -343,8 +344,29 @@ class StatsController extends Controller
             'topReferrers' => $topReferrers,
             'devices' => $devices,
             'topPaths' => $topPaths,
+            'countries' => $this->countryStats($since),
             'hasData' => PageView::exists(),
             'since' => $since,
         ];
+    }
+
+    /**
+     * Get top countries by views.
+     */
+    private function countryStats($since): array
+    {
+        return PageView::where('created_at', '>=', $since)
+            ->whereNotNull('country')
+            ->select('country', DB::raw('COUNT(*) as views'), DB::raw('COUNT(DISTINCT visitor_hash) as visitors'))
+            ->groupBy('country')
+            ->orderByDesc('views')
+            ->take(10)
+            ->get()
+            ->map(fn ($r) => [
+                'country' => $r->country,
+                'views' => (int) $r->views,
+                'visitors' => (int) $r->visitors,
+            ])
+            ->toArray();
     }
 }

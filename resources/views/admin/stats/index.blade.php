@@ -368,5 +368,22 @@
             </ul>
         </div>
     </div>
+
+    {{-- Geographic stats --}}
+    <div class="col-md-6 col-xl-3">
+        <div class="card h-100">
+            <div class="card-header">{{ __('Top countries') }}</div>
+            <ul class="list-group list-group-flush">
+                @forelse($countries as $row)
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>{{ strtoupper($row['country']) }}</span>
+                        <span class="badge text-bg-primary">{{ number_format($row['views']) }}</span>
+                    </li>
+                @empty
+                    <li class="list-group-item text-muted">{{ __('No geographic data yet.') }}</li>
+                @endforelse
+            </ul>
+        </div>
+    </div>
 </div>
 @endsection

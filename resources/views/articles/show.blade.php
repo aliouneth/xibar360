@@ -27,7 +27,8 @@
             {{-- Language Indicator --}}
             <div class="flex items-center space-x-2 mb-4">
                 <a href="{{ route('lang.switch', ['locale' => 'fr']) }}" class="px-3 py-1 text-xs font-bold {{ app()->getLocale() === 'fr' ? 'bg-senegal-red text-white' : 'bg-white text-gray-700' }} rounded">FR</a>
-                <a href="{{ route('lang.switch', ['locale' => 'en']) }}" class="px-3 py-1 text-xs font-bold {{ app()->getLocale() === 'en' ? 'bg-senegal-red text-white' : 'bg-white text-gray-700' }} rounded">EN</a>
+                <button type="button" data-xibar360-translate="ar" class="px-3 py-1 text-xs font-bold bg-white text-gray-700 rounded" title="Traduire cette page en arabe dans votre navigateur">عربي</button>
+                <button type="button" data-xibar360-translate="en" class="px-3 py-1 text-xs font-bold bg-white text-gray-700 rounded" title="Traduire cette page en anglais dans votre navigateur">EN</button>
                 <span class="px-3 py-1 text-xs font-bold bg-gray-200 text-gray-600 rounded">{{ $article->language === 'fr' ? 'Français' : 'English' }}</span>
             </div>
 

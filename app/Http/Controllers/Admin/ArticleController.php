@@ -14,16 +14,16 @@ class ArticleController extends Controller
     {
         $query = Article::with(['category', 'author']);
         
-        if ($request->has('category')) {
+        if ($request->filled('category')) {
             $query->where('category_id', $request->category);
         }
-        if ($request->has('language')) {
+        if ($request->filled('language')) {
             $query->where('language', $request->language);
         }
-        if ($request->has('source_type')) {
+        if ($request->filled('source_type')) {
             $query->where('source_type', $request->source_type);
         }
-        if ($request->has('status') && $request->status !== '') {
+        if ($request->filled('status')) {
             $query->where('is_published', $request->status);
         }
         if ($request->filled('search')) {
@@ -37,30 +37,49 @@ class ArticleController extends Controller
         $articles = $query->latest()->paginate(15);
         $categories = Category::all();
         
-        return view('articles.index', compact('articles', 'categories'));
+        return view('admin.articles.index', compact('articles', 'categories'));
     }
 
     public function create()
     {
         $categories = Category::all();
-        return view('articles.create', compact('categories'));
+        return view('admin.articles.create', compact('categories'));
     }
 
     public function store(ArticleRequest $request)
     {
-        Article::create($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('thumbnail')) {
+            $data['thumbnail'] = $request->file('thumbnail')->store('articles', 'public');
+        }
+
+        $data['user_id'] = auth()->id();
+        
+        Article::create($data);
         return redirect()->route('admin.articles.index')->with('success', 'Article created successfully.');
+    }
+
+    public function show(Article $article)
+    {
+        return view('admin.articles.show', compact('article'));
     }
 
     public function edit(Article $article)
     {
         $categories = Category::all();
-        return view('articles.edit', compact('article', 'categories'));
+        return view('admin.articles.edit', compact('article', 'categories'));
     }
 
     public function update(ArticleRequest $request, Article $article)
     {
-        $article->update($request->validated());
+        $data = $request->validated();
+
+        if ($request->hasFile('thumbnail')) {
+            $data['thumbnail'] = $request->file('thumbnail')->store('articles', 'public');
+        }
+
+        $article->update($data);
         return redirect()->route('admin.articles.index')->with('success', 'Article updated.');
     }
 
