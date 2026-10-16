@@ -25,7 +25,10 @@ class AuthenticatedSessionController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        if (! $user || ! Hash::check($request->password, $user->password)) {
+        // One generic message for every failure (unknown email, wrong
+        // password, deactivated account) so attackers cannot enumerate
+        // accounts or probe who was deactivated.
+        if (! $user || ! Hash::check($request->password, $user->password) || ! $user->is_active) {
             throw ValidationException::withMessages([
                 'email' => trans('auth.failed'),
             ]);
@@ -33,7 +36,8 @@ class AuthenticatedSessionController extends Controller
 
         Auth::login($user);
 
-        $request->session()->save();
+        // A fresh session id on login closes session-fixation attacks.
+        $request->session()->regenerate();
 
         return redirect()->intended('/');
     }

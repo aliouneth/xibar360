@@ -114,4 +114,18 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Public Registration
+    |--------------------------------------------------------------------------
+    |
+    | Self-service registration is closed unless explicitly opened. An open
+    | /register is how unknown accounts appear in the database; back-office
+    | accounts should be created by an admin instead. Set
+    | REGISTRATION_OPEN=true only if reader accounts are really needed.
+    |
+    */
+
+    'registration_open' => (bool) env('REGISTRATION_OPEN', false),
+
 ];

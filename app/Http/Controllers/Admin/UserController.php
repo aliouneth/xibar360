@@ -133,6 +133,10 @@ class UserController extends Controller
             return back()->with('error', 'You cannot deactivate your own account.');
         }
 
+        if ($user->is_active && $user->isAdmin() && $this->activeAdminCount() <= 1) {
+            return back()->with('error', 'The last active admin cannot be deactivated.');
+        }
+
         $user->update(['is_active' => ! $user->is_active]);
 
         return back()->with('success', 'User status updated.');
@@ -146,5 +150,18 @@ class UserController extends Controller
         $adminRole = Role::where('slug', 'admin')->first();
 
         return $adminRole ? $adminRole->users()->count() : 0;
+    }
+
+    /**
+     * Admins that can still log in. Deactivation is now enforced at login
+     * and in the role middleware, so this is the count that matters.
+     */
+    private function activeAdminCount(): int
+    {
+        $adminRole = Role::where('slug', 'admin')->first();
+
+        return $adminRole
+            ? $adminRole->users()->where('users.is_active', true)->count()
+            : 0;
     }
 }

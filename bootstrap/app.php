@@ -19,6 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
         // Public audience tracking. Registered in the web group so it runs
         // after StartSession; the middleware itself skips admin/auth paths.
         $middleware->appendToGroup('web', \App\Http\Middleware\TrackPageView::class);
+
+        // Baseline hardening headers on every web response.
+        $middleware->appendToGroup('web', \App\Http\Middleware\SecurityHeaders::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(
