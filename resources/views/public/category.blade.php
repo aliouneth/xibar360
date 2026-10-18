@@ -2,6 +2,10 @@
 
 @section('title', $category->name_fr . ' | Xibar360')
 
+@section('header_ad')
+    @include('ads.header')
+@endsection
+
 @section('content')
 <div class="max-w-7xl mx-auto px-4 py-8">
     <div class="mb-8">
@@ -48,5 +52,7 @@
             {{ $articles->links() }}
         </div>
     @endif
+
+    @include('ads.zone', ['zone' => 'inline', 'ads' => $inlineAds ?? collect()])
 </div>
 @endsection

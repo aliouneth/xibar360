@@ -3,11 +3,7 @@
 @section('title', $article->getTitle($locale) . ' | Xibar360')
 
 @section('header_ad')
-    @foreach($headerAds as $ad)
-        <div class="bg-gray-200 py-2 text-center">
-            <a href="{{ $ad->target_url ?? '#' }}" class="text-senegal-red font-bold text-sm">{{ $ad->title }}</a>
-        </div>
-    @endforeach
+    @include('ads.header')
 @endsection
 
 @section('content')
@@ -150,13 +146,7 @@
             </div>
 
             {{-- Sidebar Ad --}}
-            @if($sidebarAds->isNotEmpty())
-                @foreach($sidebarAds as $ad)
-                    <div class="bg-white rounded-xl p-6 shadow-md mb-4">
-                        <a href="{{ $ad->target_url ?? '#' }}" class="text-senegal-red font-bold">{{ $ad->title }}</a>
-                    </div>
-                @endforeach
-            @endif
+            @include('ads.zone', ['zone' => 'sidebar', 'ads' => $sidebarAds ?? collect()])
         </div>
     </div>
 </div>

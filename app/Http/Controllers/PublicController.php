@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Article;
 use App\Models\Category;
-use App\Models\Ad;
 use Illuminate\Http\Request;
 
 class PublicController extends Controller
@@ -37,9 +36,6 @@ class PublicController extends Controller
         $featuredIds = $featured->pluck('id')->toArray();
 
         $categories = Category::where('is_active', true)->get();
-        $headerAds = Ad::where('zone', 'header')->where('is_active', true)->get();
-        $sidebarAds = Ad::where('zone', 'sidebar')->where('is_active', true)->get();
-        $inlineAds = Ad::where('zone', 'inline')->where('is_active', true)->get();
 
         // Each block runs its own query. Filtering one shared paginator in the
         // view starved most blocks, so freshly imported stories never showed.
@@ -62,9 +58,9 @@ class PublicController extends Controller
             ->where('is_published', true)
             ->whereNotIn('id', $featuredIds)
             ->orderByDesc('publication_date')->orderByDesc('id')
-            ->paginate(24);
+            ->paginate(36);
 
-        return view('home', compact('featured', 'categories', 'sections', 'localPicks', 'latest', 'headerAds', 'sidebarAds', 'inlineAds', 'locale'));
+        return view('home', compact('featured', 'categories', 'sections', 'localPicks', 'latest', 'locale'));
     }
 
     public function show(Article $article)
@@ -81,10 +77,8 @@ class PublicController extends Controller
         }
         
         $latestArticles = Article::where('is_published', true)->latest()->take(6)->get();
-        $headerAds = Ad::where('zone', 'header')->where('is_active', true)->get();
-        $sidebarAds = Ad::where('zone', 'sidebar')->where('is_active', true)->get();
-        
-        return view('articles.show', compact('article', 'related', 'latestArticles', 'headerAds', 'sidebarAds', 'locale'));
+
+        return view('articles.show', compact('article', 'related', 'latestArticles', 'locale'));
     }
 
     public function localizedShow(string $lang, Article $article)
@@ -98,12 +92,10 @@ class PublicController extends Controller
     {
         $locale = session('locale', app()->getLocale());
         $articles = Article::where('category_id', $category->id)
-            ->where('is_published', true)->latest()->paginate(24);
+            ->where('is_published', true)->latest()->paginate(36);
         $latestArticles = Article::where('is_published', true)->latest()->take(6)->get();
-        $headerAds = Ad::where('zone', 'header')->where('is_active', true)->get();
-        $sidebarAds = Ad::where('zone', 'sidebar')->where('is_active', true)->get();
-        
-        return view('public.category', compact('articles', 'category', 'latestArticles', 'headerAds', 'sidebarAds', 'locale'));
+
+        return view('public.category', compact('articles', 'category', 'latestArticles', 'locale'));
     }
 
     public function localizedCategory(string $lang, Category $category)

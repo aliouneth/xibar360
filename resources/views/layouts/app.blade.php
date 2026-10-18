@@ -1,3 +1,4 @@
+@if($wrapperAd ?? null)<!-- Ad Manager: Banner ID {{ $wrapperAd->id }} | Title: {{ $wrapperAd->title }} | Image: {{ $wrapperAd->image ? asset('storage/' . $wrapperAd->image) : '' }} | URL: {{ $wrapperAd->target_url ?? '#' }} -->@endif
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -10,7 +11,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         :root { --senegal-red: #DC143C; --senegal-green: #228B22; --senegal-yellow: #FFD700; --senegal-dark: #1a1a2e; }
-        body { font-family: 'Instrument Sans', system-ui, sans-serif; background: #f5f5f5; }
+        body { font-family: 'Instrument Sans', system-ui, sans-serif; background: #f5f5f5; padding-top: 6rem; }
         .senegal-red { color: var(--senegal-red); }
         .bg-senegal-red { background-color: var(--senegal-red); }
         .bg-senegal-green { background-color: var(--senegal-green); }
@@ -27,12 +28,70 @@
         @media (min-width: 769px) { .desktop-hide { display: none; } }
         .hero-gradient { background: linear-gradient(135deg, #DC143C 0%, #ff6b6b 50%, #228B22 100%); }
         .category-badge { font-size: 0.75rem; padding: 0.25rem 0.75rem; border-radius: 9999px; font-weight: 600; }
+        /* Clickable background ad wrapper (seneweb-style): fixed behind all
+           content; page gaps reveal it and clicks pass through to the ad. */
+        #clickable-bg-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            display: block;
+            text-decoration: none;
+        }
+        #clickable-bg-banner img {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 1785px;
+            height: auto;
+            pointer-events: none;
+        }
+        /* Equal-height ad cards: zones become flex columns and cards fill
+           the (grid-stretched) cell height, so header slots match. */
+        .ad-zone { display: flex; flex-direction: column; }
+        .ad-zone__item {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        /* Opaque center column so the background wrapper ad frames the page
+           (visible top/sides/bottom) instead of showing behind the content. */
+        .page-backdrop {
+            position: fixed;
+            top: 6rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: calc(100% - 6rem);
+            background: #f5f5f5;
+            z-index: 0;
+            pointer-events: none;
+        }
+        @media (min-width: 768px) {
+            .page-backdrop { max-width: 80rem; }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
+    {{-- Full-page background ad (seneweb-style wrapper) --}}
+    @include('ads.wrapper')
+
+    {{--
+        Opaque center column: hides the background ad behind the article
+        area, so it frames the page (top / sides / bottom) instead of
+        showing through the content. Sides are covered on mobile for a
+        clean reading experience.
+    --}}
+    <div class="page-backdrop" aria-hidden="true"></div>
+
     {{-- Header --}}
-    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50 max-w-7xl mx-auto">
+        <div class="px-0">
             <div class="flex items-center justify-between h-24">
                 <a href="{{ route('home') }}" class="flex items-center">
                     <img src="{{ asset('images/logo.png') }}" alt="Xibar360" class="h-[5.8126359375rem] w-auto">
@@ -75,16 +134,19 @@
     </header>
 
     {{-- Header Ad Zone --}}
-    @yield('header_ad')
+    <div class="relative z-10">
+        @yield('header_ad')
+    </div>
 
     {{-- Main Content --}}
-    <main class="flex-grow">
+    <main class="flex-grow relative z-10">
         @yield('content')
     </main>
 
     {{-- Footer --}}
-    <footer class="bg-senegal-dark text-white py-8">
+    <footer class="bg-senegal-dark text-white py-8 relative z-10">
         <div class="max-w-7xl mx-auto px-4">
+            @include('ads.zone', ['zone' => 'footer', 'ads' => $footerAds ?? collect()])
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
                 <div>
                     <h3 class="text-xl font-bold mb-3">Xibar360</h3>

@@ -19,7 +19,7 @@ class AdsTableSeeder extends Seeder
                 'image' => 'ads/sunubank-header.jpg',
                 'html_snippet' => null,
                 'target_url' => 'https://sunubank.sn',
-                'zone' => 'header',
+                'zone' => 'header_left',
                 'is_active' => true,
                 'order' => 1,
             ],

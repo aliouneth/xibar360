@@ -3,26 +3,15 @@
 @section('title', 'Accueil')
 
 @section('header_ad')
-    @foreach($headerAds as $ad)
-        <a href="{{ $ad->target_url ?? '#' }}" class="block bg-white rounded-xl shadow-md p-4 text-center">
-            @if($ad->html_snippet)
-                {!! $ad->html_snippet !!}            
-            @elseif($ad->image)
-                <img src="{{ asset('storage/' . $ad->image) }}" alt="{{ $ad->title }}" class="max-h-32 mx-auto mb-2">
-                @if($ad->description)
-                    <p class="text-sm text-gray-600">{{ $ad->description }}</p>
-                @endif
-            @endif
-        </a>
-    @endforeach
+    @include('ads.header')
 @endsection
 
 @section('content')
     {{-- Hero Section --}}
     @if($featured->isNotEmpty())
-    <div class="max-w-7xl mx-auto px-4 py-8">
+    <div class="max-w-7xl mx-auto px-4 pt-0 pb-0">
         {{-- Featured Slider --}}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 mb-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 mb-0">
             @foreach($featured->take(2) as $article)
                 <a href="{{ route('articles.show', $article) }}" class="card-hover bg-white rounded-xl shadow-md overflow-hidden block">
                     @if($article->thumbnail)
@@ -52,22 +41,9 @@
     @endif
 
     {{-- Inline Ads --}}
-    @if($inlineAds->isNotEmpty())
-    <div class="max-w-7xl mx-auto px-4 py-8">
-        @foreach($inlineAds as $ad)
-            <a href="{{ $ad->target_url ?? '#' }}" class="block bg-white rounded-xl shadow-md p-4 text-center my-4">
-                @if($ad->html_snippet)
-                    {!! $ad->html_snippet !!}                        
-                @elseif($ad->image)
-                    <img src="{{ asset('storage/' . $ad->image) }}" alt="{{ $ad->title }}" class="max-h-48 mx-auto mb-2">
-                    @if($ad->description)
-                        <p class="text-sm text-gray-600">{{ $ad->description }}</p>
-                    @endif
-                @else
-                    <span class="text-senegal-red font-bold">{{ $ad->title }}</span>
-                @endif
-            </a>
-        @endforeach
+    @if(($inlineAds ?? collect())->isNotEmpty())
+    <div class="max-w-7xl mx-auto px-4 pb-0">
+        @include('ads.zone', ['zone' => 'inline', 'ads' => $inlineAds])
     </div>
     @endif
 
@@ -171,24 +147,7 @@
             <div class="lg:col-span-1 space-y-8">
                 <div class="lg:col-span-1 space-y-8">
                     {{-- Sidebar Ads at top --}}
-                    @if($sidebarAds->isNotEmpty())
-                    <div class="space-y-4">
-                        @foreach($sidebarAds as $ad)
-                            <a href="{{ $ad->target_url ?? '#' }}" class="block bg-white rounded-xl shadow-md p-4 text-center">
-                                @if($ad->html_snippet)
-                                    {!! $ad->html_snippet !!}                        
-                                @elseif($ad->image)
-                                    <img src="{{ asset('storage/' . $ad->image) }}" alt="{{ $ad->title }}" class="max-h-32 mx-auto mb-2">
-                                    @if($ad->description)
-                                        <p class="text-sm text-gray-600">{{ $ad->description }}</p>
-                                    @endif
-                                @else
-                                    <span class="text-senegal-red font-bold">{{ $ad->title }}</span>
-                                @endif
-                            </a>
-                        @endforeach
-                    </div>
-                    @endif
+                    @include('ads.zone', ['zone' => 'sidebar', 'ads' => $sidebarAds ?? collect()])
                     @foreach(['MONDE', 'PEOPLE'] as $catName)
                         @php($cat = $categories->firstWhere('name_fr', $catName))
                         @if($cat)

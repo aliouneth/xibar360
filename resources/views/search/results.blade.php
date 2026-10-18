@@ -2,6 +2,10 @@
 
 @section('title', __('Recherche') . ' | Xibar360')
 
+@section('header_ad')
+    @include('ads.header')
+@endsection
+
 @section('content')
 <div class="max-w-7xl mx-auto px-4 py-8">
     <h1 class="text-2xl font-bold text-gray-900 mb-2">🔍 {{ __('Recherche') }}</h1>
@@ -61,5 +65,7 @@
     <div class="mt-6">
         {{ $results->links() }}
     </div>
+
+    @include('ads.zone', ['zone' => 'inline', 'ads' => $inlineAds ?? collect()])
 </div>
 @endsection

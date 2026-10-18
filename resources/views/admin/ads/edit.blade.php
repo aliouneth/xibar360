@@ -27,8 +27,8 @@
         <div class="col-md-6 mb-3">
             <label class="form-label">{{ __('Zone') }}</label>
             <select name="zone" class="form-select @error('zone') is-invalid @enderror">
-                @foreach(['header', 'sidebar', 'inline', 'footer'] as $z)
-                    <option value="{{ $z }}" {{ old('zone', $ad->zone) == $z ? 'selected' : '' }}>{{ ucfirst($z) }}</option>
+                @foreach(['header_left', 'header_center', 'header_right', 'sidebar', 'inline', 'footer', 'wrapper'] as $z)
+                    <option value="{{ $z }}" {{ old('zone', $ad->zone) == $z ? 'selected' : '' }}>{{ $z === 'wrapper' ? 'Wrapper (fond de page)' : ucfirst(str_replace('_', ' ', $z)) }}</option>
                 @endforeach
             </select>
             @error('zone')<div class="invalid-feedback">{{ $message }}</div>@enderror
@@ -38,6 +38,20 @@
             <label class="form-label">{{ __('Order') }}</label>
             <input type="number" name="order" class="form-control @error('order') is-invalid @enderror" value="{{ old('order', $ad->order) }}" min="0">
             @error('order')<div class="invalid-feedback">{{ $message }}</div>@enderror
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">{{ __('Start Date') }}</label>
+            <input type="date" name="start_date" class="form-control @error('start_date') is-invalid @enderror" value="{{ old('start_date', optional($ad->start_date)->format('Y-m-d')) }}">
+            @error('start_date')<div class="invalid-feedback">{{ $message }}</div>@endif
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label">{{ __('End Date') }}</label>
+            <input type="date" name="end_date" class="form-control @error('end_date') is-invalid @endif" value="{{ old('end_date', optional($ad->end_date)->format('Y-m-d')) }}">
+            @error('end_date')<div class="invalid-feedback">{{ $message }}</div>@endif
         </div>
     </div>
 
