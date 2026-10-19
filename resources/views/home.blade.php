@@ -11,7 +11,7 @@
     @if($featured->isNotEmpty())
     <div class="max-w-7xl mx-auto px-4 pt-0 pb-0">
         {{-- Featured Slider --}}
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 mb-0">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 mb-4">
             @foreach($featured->take(2) as $article)
                 <a href="{{ route('articles.show', $article) }}" class="card-hover bg-white rounded-xl shadow-md overflow-hidden block">
                     @if($article->thumbnail)

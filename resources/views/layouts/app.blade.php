@@ -50,15 +50,7 @@
             height: auto;
             pointer-events: none;
         }
-        /* Equal-height ad cards: zones become flex columns and cards fill
-           the (grid-stretched) cell height, so header slots match. */
-        .ad-zone { display: flex; flex-direction: column; }
-        .ad-zone__item {
-            flex: 1 1 auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+        /* Header ad zones: ensure grid layout is not overridden */
         /* Opaque center column so the background wrapper ad frames the page
            (visible top/sides/bottom) instead of showing behind the content. */
         .page-backdrop {
