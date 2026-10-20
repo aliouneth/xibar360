@@ -11,7 +11,9 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         :root { --senegal-red: #DC143C; --senegal-green: #228B22; --senegal-yellow: #FFD700; --senegal-dark: #1a1a2e; }
-        body { font-family: 'Instrument Sans', system-ui, sans-serif; background: #f5f5f5; padding-top: 6rem; }
+        html, body { height: 100%; }
+        body { font-family: 'Instrument Sans', system-ui, sans-serif; background: #f5f5f5; padding-top: 8.4rem; overflow: hidden; }
+        .scroll-area { position: fixed; top: calc(8.4rem + 7.5rem); left: 0; right: 0; bottom: 0; overflow-y: auto; overflow-x: hidden; }
         .senegal-red { color: var(--senegal-red); }
         .bg-senegal-red { background-color: var(--senegal-red); }
         .bg-senegal-green { background-color: var(--senegal-green); }
@@ -55,11 +57,11 @@
            (visible top/sides/bottom) instead of showing behind the content. */
         .page-backdrop {
             position: fixed;
-            top: 6rem;
+            top: 8.4rem;
             left: 50%;
             transform: translateX(-50%);
             width: 100%;
-            height: calc(100% - 6rem);
+            height: calc(100% - 8.4rem);
             background: #f5f5f5;
             z-index: 0;
             pointer-events: none;
@@ -82,11 +84,11 @@
     <div class="page-backdrop" aria-hidden="true"></div>
 
     {{-- Header --}}
-    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50 max-w-7xl mx-auto">
+    <header class="bg-white shadow-sm border-b border-gray-200 fixed top-[8.4rem] left-0 right-0 z-50 max-w-7xl mx-auto">
         <div class="px-0">
-            <div class="flex items-center justify-between h-24">
+            <div class="flex items-center justify-between h-[7.5rem]">
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <img src="{{ asset('images/logo.png') }}" alt="Xibar360" class="h-[5.8126359375rem] w-auto">
+                    <img src="{{ asset('images/logo.png') }}" alt="Xibar360" class="h-24 w-auto">
                 </a>
                 
                 <nav class="hidden md:flex items-center space-x-6">
@@ -126,17 +128,18 @@
     </header>
 
     {{-- Header Ad Zone --}}
-    <div class="relative z-10">
-        @yield('header_ad')
-    </div>
+    <div class="scroll-area">
+        <div class="relative z-10 mt-12">
+            @yield('header_ad')
+        </div>
 
-    {{-- Main Content --}}
-    <main class="flex-grow relative z-10">
-        @yield('content')
-    </main>
+        {{-- Main Content --}}
+        <main class="flex-grow relative z-10">
+            @yield('content')
+        </main>
 
-    {{-- Footer --}}
-    <footer class="bg-senegal-dark text-white py-8 relative z-10">
+        {{-- Footer --}}
+        <footer class="bg-senegal-dark text-white py-8 relative z-10">
         <div class="max-w-7xl mx-auto px-4">
             @include('ads.zone', ['zone' => 'footer', 'ads' => $footerAds ?? collect()])
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
@@ -174,7 +177,8 @@
                 <p>&copy; 2026 Xibar360. Tous droits réservés.</p>
             </div>
         </div>
-    </footer>
+        </footer>
+    </div>
 
     <script>
         (function () {

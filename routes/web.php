@@ -71,3 +71,6 @@ Route::middleware(['auth', 'role:admin|editor'])->prefix('editor')->name('editor
     Route::put('/articles/{article}', [AdminArticleController::class, 'update'])->name('articles.update');
     Route::delete('/articles/{article}', [AdminArticleController::class, 'destroy'])->name('articles.destroy');
 });
+
+
+

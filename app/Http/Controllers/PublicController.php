@@ -58,7 +58,7 @@ class PublicController extends Controller
             ->where('is_published', true)
             ->whereNotIn('id', $featuredIds)
             ->orderByDesc('publication_date')->orderByDesc('id')
-            ->paginate(36);
+            ->paginate(48);
 
         return view('home', compact('featured', 'categories', 'sections', 'localPicks', 'latest', 'locale'));
     }
@@ -92,7 +92,7 @@ class PublicController extends Controller
     {
         $locale = session('locale', app()->getLocale());
         $articles = Article::where('category_id', $category->id)
-            ->where('is_published', true)->latest()->paginate(36);
+            ->where('is_published', true)->latest()->paginate(48);
         $latestArticles = Article::where('is_published', true)->latest()->take(6)->get();
 
         return view('public.category', compact('articles', 'category', 'latestArticles', 'locale'));
