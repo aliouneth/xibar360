@@ -9,7 +9,7 @@
 @section('content')
     {{-- Hero Section --}}
     @if($featured->isNotEmpty())
-    <div class="max-w-7xl mx-auto px-4 pt-0 pb-0">
+    <div class="max-w-7xl mx-auto px-4 pt-6 pb-0">
         {{-- Featured Slider --}}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 mb-4">
             @foreach($featured->take(2) as $article)
@@ -42,7 +42,7 @@
 
     {{-- Inline Ads --}}
     @if(($inlineAds ?? collect())->isNotEmpty())
-    <div class="max-w-7xl mx-auto px-4 pb-0">
+    <div class="max-w-7xl mx-auto px-4 pb-8">
         @include('ads.zone', ['zone' => 'inline', 'ads' => $inlineAds])
     </div>
     @endif

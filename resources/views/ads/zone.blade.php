@@ -1,6 +1,6 @@
 @php($ads = $ads ?? collect())
 @if($ads->isNotEmpty())
-    <div data-ad-zone="{{ $zone }}" style="margin: 20px 0; text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center;">
+    <div data-ad-zone="{{ $zone }}" class="ad-zone" style="text-align: center; height: 100%; display: flex; flex-direction: column; justify-content: center;">
         @foreach($ads as $ad)
             <a href="{{ $ad->target_url ?: '#' }}"
                style="display: block; background: white; border-radius: 0.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); padding: 1rem; text-align: center; width: 100%;"

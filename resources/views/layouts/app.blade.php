@@ -129,7 +129,7 @@
 
     {{-- Header Ad Zone --}}
     <div class="scroll-area">
-        <div class="relative z-10 mt-12">
+        <div class="relative z-10 mt-4">
             @yield('header_ad')
         </div>
 
