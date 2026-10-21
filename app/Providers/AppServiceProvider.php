@@ -18,7 +18,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if ($this->app->isLocal()) {
-            URL::forceScheme('http');
+            URL::forceScheme('https');
         }
 
         $locale = session('locale', config('app.locale', 'fr'));
