@@ -11,9 +11,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         :root { --senegal-red: #DC143C; --senegal-green: #228B22; --senegal-yellow: #FFD700; --senegal-dark: #1a1a2e; }
-        html, body { height: 100%; }
-        body { font-family: 'Instrument Sans', system-ui, sans-serif; background: #f5f5f5; padding-top: 8.4rem; overflow: hidden; }
-        .scroll-area { position: fixed; top: calc(8.4rem + 7.5rem); left: 0; right: 0; bottom: 0; overflow-y: auto; overflow-x: hidden; }
+        body { font-family: 'Instrument Sans', system-ui, sans-serif; background: #f5f5f5; padding-top: 8.4rem; }
         .senegal-red { color: var(--senegal-red); }
         .bg-senegal-red { background-color: var(--senegal-red); }
         .bg-senegal-green { background-color: var(--senegal-green); }
@@ -66,6 +64,12 @@
             z-index: 0;
             pointer-events: none;
         }
+        /* When the sticky header is pinned at top:0, its bottom is at 7.5rem;
+           pull the backdrop up to meet it so no wrapper-ad slit shows. */
+        body.is-scrolled .page-backdrop {
+            top: 7.5rem;
+            height: calc(100% - 7.5rem);
+        }
         @media (min-width: 768px) {
             .page-backdrop { max-width: 80rem; }
         }
@@ -84,7 +88,7 @@
     <div class="page-backdrop" aria-hidden="true"></div>
 
     {{-- Header --}}
-    <header class="bg-white shadow-sm border-b border-gray-200 fixed top-[8.4rem] left-0 right-0 z-50 max-w-7xl mx-auto">
+    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50 w-full max-w-7xl mx-auto">
         <div class="px-0">
             <div class="flex items-center justify-between h-[7.5rem]">
                 <a href="{{ route('home') }}" class="flex items-center">
@@ -128,8 +132,8 @@
     </header>
 
     {{-- Header Ad Zone --}}
-    <div class="scroll-area">
-        <div class="relative z-10 mt-4">
+    <div class="relative z-10">
+        <div class="relative z-10 mt-1">
             @yield('header_ad')
         </div>
 
@@ -282,6 +286,17 @@
                     translate(this.getAttribute('data-xibar360-translate'));
                 });
             }
+        })();
+    </script>
+
+    <script>
+        (function () {
+            var threshold = 134;
+            function updateScrolled() {
+                document.body.classList.toggle('is-scrolled', window.scrollY > threshold);
+            }
+            window.addEventListener('scroll', updateScrolled, { passive: true });
+            updateScrolled();
         })();
     </script>
 

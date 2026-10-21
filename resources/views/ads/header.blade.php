@@ -6,7 +6,7 @@
     .header-ads { max-width: 80rem; margin: 0 auto; padding: 0 1rem; }
     .header-ads__row { display: flex; flex-direction: row; gap: 1rem; }
     .header-ads__cell { flex: 1 1 0; min-width: 0; }
-    .header-ads .ad-zone { margin: 20px 0; }
+    .header-ads .ad-zone { margin: 0 0 20px; }
     @media (max-width: 768px) {
         .header-ads { padding: 0 0.5rem; }
         .header-ads__row { flex-direction: column; gap: 0; }

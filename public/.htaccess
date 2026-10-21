@@ -5,6 +5,22 @@
 
     RewriteEngine On
 
+    # --- Canonical host + HTTPS (production only) -------------------------
+    # Goal: http://xibar360.com, http://www.xibar360.com and
+    #       https://www.xibar360.com  ->  https://xibar360.com  (301).
+    # Skipped automatically on localhost / other hosts.
+    # Proxy-aware via X-Forwarded-Proto so it won't loop behind Cloudflare/nginx.
+
+    # 1) Any request to the www host -> apex HTTPS.
+    RewriteCond %{HTTP_HOST} ^www\.xibar360\.com$ [NC]
+    RewriteRule ^ https://xibar360.com%{REQUEST_URI} [R=301,L]
+
+    # 2) Insecure request to the apex host -> apex HTTPS (unless proxy says HTTPS).
+    RewriteCond %{HTTP_HOST} ^xibar360\.com$ [NC]
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !https [NC]
+    RewriteRule ^ https://xibar360.com%{REQUEST_URI} [R=301,L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
