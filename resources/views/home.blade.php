@@ -7,6 +7,8 @@
 @endsection
 
 @section('content')
+    @php($articlePlaceholder = asset('images/article-placeholder.svg'))
+
     {{-- Hero Section --}}
     @if($featured->isNotEmpty())
     <div class="max-w-7xl mx-auto px-4 pt-6 pb-0">
@@ -14,11 +16,9 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 mb-4">
             @foreach($featured->take(2) as $article)
                 <a href="{{ route('articles.show', $article) }}" class="card-hover bg-white rounded-xl shadow-md overflow-hidden block">
-                    @if($article->thumbnail)
-                        <img src="{{ $article->thumbnail }}" alt=""
-                             class="h-64 w-full object-cover"
-                             onerror="this.style.display='none'">
-                    @endif
+                    <img src="{{ $article->thumbnail ?: $articlePlaceholder }}" alt=""
+                         class="h-64 w-full object-cover"
+                         onerror="this.onerror=null;this.src='{{ $articlePlaceholder }}';">
                     <div class="p-6">
                         <div class="flex items-center gap-2 mb-3 flex-wrap">
                             <span class="category-badge bg-senegal-red text-white inline-block">{{ $article->category?->name_fr ?? 'Actualité' }}</span>

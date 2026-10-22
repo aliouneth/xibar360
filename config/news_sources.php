@@ -7,9 +7,10 @@ return [
     | News import sources
     |--------------------------------------------------------------------------
     |
-    | Upstream RSS/Atom feeds polled by the news importer. Every URL below was
-    | verified to return a parseable feed; entries that fail are skipped
-    | individually so one bad source cannot break a refresh.
+    | Sources are managed from the admin panel (Admin > Sources) and stored in
+    | the `sources` table. This list is only used to seed that table on a fresh
+    | database and as a fallback when the table does not exist yet, so edits
+    | made here after the migration has run do NOT affect a refresh.
     |
     | Each entry supports:
     |   name      - human readable label, stored on articles.source_name
@@ -35,6 +36,13 @@ return [
         [
             'name' => 'Seneweb',
             'url' => 'https://www.seneweb.com/feed',
+            'language' => 'fr',
+            'enabled' => true,
+        ],
+
+        [
+            'name' => 'Xalaat TV',
+            'url' => 'https://xalaattv.net/feed',
             'language' => 'fr',
             'enabled' => true,
         ],

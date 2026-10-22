@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Source;
 use App\Services\NewsImporterService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Cache;
@@ -19,9 +20,11 @@ class NewsController extends Controller
 
     public function refresh(): RedirectResponse
     {
-        // A refresh talks to ten external feeds and can take ~20s, which is
-        // well past the default web timeout.
-        set_time_limit((int) config('news_sources.timeout', 20) * count(config('news_sources.sources', [])) + 60);
+        // A refresh talks to every enabled external feed and can take ~20s
+        // each, which is well past the default web timeout.
+        $sourceCount = max(1, Source::query()->where('enabled', true)->count());
+
+        set_time_limit((int) config('news_sources.timeout', 20) * $sourceCount + 60);
 
         // Guard against a double-click running two concurrent imports.
         $lock = Cache::lock(self::LOCK_KEY, self::LOCK_SECONDS);

@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use App\Models\Source;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use SimpleXMLElement;
 use Throwable;
@@ -41,6 +43,8 @@ class WebScannerService
 
                 $articles = array_merge($articles, $items);
 
+                $this->recordStatus($source, true);
+
                 Log::info('news scan: source ok', [
                     'source' => $source['name'],
                     'items' => count($items),
@@ -49,6 +53,8 @@ class WebScannerService
                 // A single unreachable or malformed feed must not abort the
                 // whole refresh, so failures are collected and reported.
                 $errors[$source['name']] = $e->getMessage();
+
+                $this->recordStatus($source, false, $e->getMessage());
 
                 Log::warning('news scan: source failed', [
                     'source' => $source['name'],
@@ -70,6 +76,17 @@ class WebScannerService
      */
     public function enabledSources(): array
     {
+        // Sources are managed from the admin panel. The config list is only a
+        // fallback for a database that has not run the sources migration yet.
+        if (Schema::hasTable('sources')) {
+            return Source::query()
+                ->where('enabled', true)
+                ->orderBy('name')
+                ->get()
+                ->map(fn (Source $source) => $source->toScannerSource())
+                ->all();
+        }
+
         $sources = config('news_sources.sources', []);
 
         return array_values(array_filter($sources, fn (array $s) => ($s['enabled'] ?? true) === true));
@@ -88,12 +105,43 @@ class WebScannerService
 
                 $report['articles'] = array_merge($report['articles'], $items);
                 $report['sources'][] = ['name' => $source['name'], 'ok' => true, 'count' => count($items)];
+
+                $this->recordStatus($source, true);
             } catch (Throwable $e) {
                 $report['sources'][] = ['name' => $source['name'], 'ok' => false, 'error' => $e->getMessage()];
+
+                $this->recordStatus($source, false, $e->getMessage());
             }
         }
 
         return $report;
+    }
+
+    /**
+     * Persists the outcome of a source attempt so the admin list can show the
+     * last check result. Sources coming from the config fallback have no id
+     * and are simply ignored.
+     *
+     * @param  array<string, mixed>  $source
+     */
+    private function recordStatus(array $source, bool $ok, ?string $error = null): void
+    {
+        if (! isset($source['id'])) {
+            return;
+        }
+
+        try {
+            Source::whereKey($source['id'])->update([
+                'last_checked_at' => now(),
+                'last_status' => $ok ? 'ok' : 'failed',
+                'last_error' => $error,
+            ]);
+        } catch (Throwable $e) {
+            Log::warning('news scan: could not record source status', [
+                'source' => $source['name'] ?? null,
+                'error' => $e->getMessage(),
+            ]);
+        }
     }
 
     private function fetch(string $url, array $source = []): SimpleXMLElement

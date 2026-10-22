@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SearchController as AdminSearchController;
 use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+use App\Http\Controllers\Admin\SourceController as AdminSourceController;
 use App\Http\Controllers\Admin\StatsController as AdminStatsController;
 
 // Public Routes
@@ -51,6 +52,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('articles', AdminArticleController::class);
     Route::resource('categories', AdminCategoryController::class);
     Route::resource('ads', AdminAdController::class);
+    Route::resource('sources', AdminSourceController::class)->except(['show']);
+    Route::post('/sources/{source}/toggle', [AdminSourceController::class, 'toggle'])->name('sources.toggle');
     Route::resource('users', AdminUserController::class);
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
