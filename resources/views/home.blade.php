@@ -16,7 +16,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-8 mb-4">
             @foreach($featured->take(2) as $article)
                 <a href="{{ route('articles.show', $article) }}" class="card-hover bg-white rounded-xl shadow-md overflow-hidden block">
-                    <img src="{{ $article->thumbnail ?: $articlePlaceholder }}" alt=""
+                    <img src="{{ $article->imageUrl() ?: $articlePlaceholder }}" alt=""
                          class="h-64 w-full object-cover"
                          onerror="this.onerror=null;this.src='{{ $articlePlaceholder }}';">
                     <div class="p-6">
@@ -56,8 +56,8 @@
                 @foreach($latest as $article)
                     <a href="{{ route('articles.show', $article) }}"
                        class="card-hover bg-white rounded-xl shadow-md overflow-hidden flex flex-col">
-                        @if($article->thumbnail)
-                            <img src="{{ $article->thumbnail }}" alt=""
+                        @if($article->imageUrl())
+                            <img src="{{ $article->imageUrl() }}" alt=""
                                  class="h-40 w-full object-cover" loading="lazy"
                                  onerror="this.style.display='none'">
                         @endif

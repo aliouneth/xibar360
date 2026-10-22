@@ -73,6 +73,26 @@ class Article extends Model
         return $query->where('source_type', 'local');
     }
 
+    /**
+     * Resolvable image URL for the article, or null when it has no thumbnail.
+     * Some feeds expose a YouTube embed as their media URL; that cannot render
+     * in an <img>, so the real video thumbnail is derived from it instead.
+     */
+    public function imageUrl(): ?string
+    {
+        $thumb = trim((string) $this->thumbnail);
+
+        if ($thumb === '') {
+            return null;
+        }
+
+        if (preg_match('#(?:youtube\.com/(?:embed/|watch\?v=|shorts/)|youtu\.be/)([A-Za-z0-9_-]{6,})#i', $thumb, $match)) {
+            return 'https://img.youtube.com/vi/'.$match[1].'/hqdefault.jpg';
+        }
+
+        return $thumb;
+    }
+
     public function getTitle($lang)
     {
         return $lang === 'fr' ? $this->title_fr : $this->title_en ?? $this->title_fr;

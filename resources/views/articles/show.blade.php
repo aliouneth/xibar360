@@ -57,9 +57,9 @@
             </div>
 
             {{-- Thumbnail --}}
-            @if($article->thumbnail)
+            @if($article->imageUrl())
                 <div class="mb-6 rounded-xl overflow-hidden shadow-lg">
-                    <img src="{{ $article->thumbnail }}" alt="{{ $article->getTitle($locale) }}" class="w-full h-64 md:h-96 object-cover">
+                    <img src="{{ $article->imageUrl() }}" alt="{{ $article->getTitle($locale) }}" class="w-full h-64 md:h-96 object-cover">
                 </div>
             @endif
 
