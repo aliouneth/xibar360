@@ -6,12 +6,13 @@
     <title>@yield('title', config('app.name'))</title>
     <link rel="icon" href="{{ asset('images/logo.png') }}" type="image/png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid px-3">
             <a class="navbar-brand" href="{{ route('admin.dashboard') }}">
-                <img src="{{ asset('images/logo.png') }}" alt="Xibar360" class="h-[60px] w-auto" style="height: 60px !important;">
+                <img src="{{ asset('images/logo.png') }}" alt="Xibar360" style="height: 60px; width: auto;">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar" aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>

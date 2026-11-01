@@ -137,7 +137,7 @@
         <div class="card mb-3">
             <div class="card-header">{{ __('Thumbnail') }}</div>
             <div class="card-body text-center">
-                <img src="{{ asset('storage/' . $article->thumbnail) }}" alt="" class="img-fluid" style="max-height: 300px;">
+                <img src="{{ $article->thumbnailSrc() }}" alt="" class="img-fluid" style="max-height: 300px;">
             </div>
         </div>
         @endif

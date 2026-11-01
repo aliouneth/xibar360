@@ -71,8 +71,8 @@
             <tr>
                 <td>{{ $article->id }}</td>
                 <td>
-                    @if($article->thumbnail)
-                        <img src="{{ asset('storage/' . $article->thumbnail) }}" alt="" class="img-thumbnail" style="width: 60px; height: 40px; object-fit: cover;">
+                    @if($article->thumbnailSrc())
+                        <img src="{{ $article->thumbnailSrc() }}" alt="" class="img-thumbnail" style="width: 60px; height: 40px; object-fit: cover;">
                     @else
                         <span class="text-muted">-</span>
                     @endif
@@ -102,19 +102,19 @@
                 </td>
                 <td class="d-none d-xl-table-cell">{{ $article->publication_date?->format('Y-m-d H:i') ?? '-' }}</td>
                 <td>
-                    <div class="btn-group btn-group-sm">
-                        <a href="{{ route('admin.articles.show', $article) }}" class="btn btn-outline-primary" title="{{ __('View') }}"><i class="fas fa-eye"></i></a>
-                        <a href="{{ route('admin.articles.edit', $article) }}" class="btn btn-outline-secondary" title="{{ __('Edit') }}"><i class="fas fa-edit"></i></a>
+                    <div class="d-flex flex-wrap gap-1">
+                        <a href="{{ route('admin.articles.show', $article) }}" class="btn btn-sm btn-outline-primary" title="{{ __('View') }}"><i class="fas fa-eye"></i></a>
+                        <a href="{{ route('admin.articles.edit', $article) }}" class="btn btn-sm btn-outline-secondary" title="{{ __('Edit') }}"><i class="fas fa-edit"></i></a>
                         <form action="{{ route('admin.articles.toggle-publish', $article) }}" method="POST" class="d-inline">
                             @csrf
-                            <button type="submit" class="btn btn-outline-{{ $article->is_published ? 'warning' : 'success' }}" title="{{ $article->is_published ? __('Unpublish') : __('Publish') }}">
+                            <button type="submit" class="btn btn-sm btn-outline-{{ $article->is_published ? 'warning' : 'success' }}" title="{{ $article->is_published ? __('Unpublish') : __('Publish') }}">
                                 <i class="fas fa-{{ $article->is_published ? 'times' : 'check' }}"></i>
                             </button>
                         </form>
                         <form action="{{ route('admin.articles.destroy', $article) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Are you sure?') }}')">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-outline-danger" title="{{ __('Delete') }}"><i class="fas fa-trash"></i></button>
+                            <button type="submit" class="btn btn-sm btn-outline-danger" title="{{ __('Delete') }}"><i class="fas fa-trash"></i></button>
                         </form>
                     </div>
                 </td>

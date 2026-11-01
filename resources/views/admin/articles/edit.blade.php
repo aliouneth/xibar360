@@ -103,7 +103,7 @@
             <label class="form-label">{{ __('Current Thumbnail') }}</label>
             @if($article->thumbnail)
                 <div class="mb-2">
-                    <img src="{{ asset('storage/' . $article->thumbnail) }}" alt="" class="img-thumbnail" style="max-width: 200px;">
+                    <img src="{{ $article->thumbnailSrc() }}" alt="" class="img-thumbnail" style="max-width: 200px;">
                 </div>
             @else
                 <div class="text-muted mb-2">{{ __('No thumbnail') }}</div>

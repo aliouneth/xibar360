@@ -186,7 +186,8 @@ class WebScannerService
             );
 
             if ($xml === false) {
-                throw new \RuntimeException('Malformed XML: ' . trim(libxml_get_error() ?: 'unknown'));
+                $error = libxml_get_last_error();
+                throw new \RuntimeException('Malformed XML: ' . ($error ? trim($error->message) : 'unknown'));
             }
         } finally {
             libxml_clear_errors();

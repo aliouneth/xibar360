@@ -22,8 +22,8 @@
             @foreach($articles as $article)
                 <a href="{{ route('articles.show', $article) }}"
                    class="card-hover bg-white rounded-xl shadow-md overflow-hidden flex flex-col h-full">
-                    @if($article->imageUrl())
-                        <img src="{{ $article->imageUrl() }}" alt=""
+                    @if($article->thumbnailSrc())
+                        <img src="{{ $article->thumbnailSrc() }}" alt=""
                              class="h-48 w-full object-cover" loading="lazy"
                              onerror="this.style.display='none'">
                     @endif

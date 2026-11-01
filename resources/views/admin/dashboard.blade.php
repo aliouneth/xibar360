@@ -129,4 +129,46 @@
         </div>
     </div>
 </div>
+
+<h4 class="mt-4">{{ __('Visitors') }}</h4>
+<p class="text-muted small mb-2">{{ __('Unique visitors per period.') }}</p>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ __('Today') }}</h5>
+                <h2>{{ number_format($visitorsToday ?? 0) }}</h2>
+                <p class="mb-0 small">{{ __('visitors') }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ __('Last 7 days') }}</h5>
+                <h2>{{ number_format($visitors7Days ?? 0) }}</h2>
+                <p class="mb-0 small">{{ __('visitors') }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ __('Last 15 days') }}</h5>
+                <h2>{{ number_format($visitors15Days ?? 0) }}</h2>
+                <p class="mb-0 small">{{ __('visitors') }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-secondary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ __('Last 30 days') }}</h5>
+                <h2>{{ number_format($visitors30Days ?? 0) }}</h2>
+                <p class="mb-0 small">{{ __('visitors') }}</p>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

@@ -93,6 +93,25 @@ class Article extends Model
         return $thumb;
     }
 
+    /**
+     * Ready-to-use <img> source. Imported feeds store absolute URLs while
+     * locally uploaded files are relative to the public storage disk.
+     */
+    public function thumbnailSrc(): ?string
+    {
+        $url = $this->imageUrl();
+
+        if ($url === null) {
+            return null;
+        }
+
+        if (preg_match('#^https?://#i', $url)) {
+            return $url;
+        }
+
+        return asset('storage/'.ltrim($url, '/'));
+    }
+
     public function getTitle($lang)
     {
         return $lang === 'fr' ? $this->title_fr : $this->title_en ?? $this->title_fr;
