@@ -90,9 +90,9 @@
         @endif
     </div>
 
-    {{-- Category sections: every active category gets a block, split evenly
-         across three columns, so a category created in the admin panel shows
-         up here automatically. --}}
+    {{-- Category sections: every active category gets its own cell in one
+         grid, so a category created in the admin panel shows up automatically
+         and no column is left half empty on narrower screens. --}}
     @php
         $categoryIcons = [
             'POLITIQUE' => '🏛️',
@@ -103,57 +103,52 @@
             'MONDE' => '🌐',
             'PEOPLE' => '🌟',
         ];
-        $categoryColumns = $categories->values()->split(3);
-        $lastColumn = $categoryColumns->count() - 1;
     @endphp
 
     <div class="max-w-7xl mx-auto px-4 pb-12">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            @foreach($categoryColumns as $columnIndex => $columnCategories)
-                <div class="lg:col-span-1 space-y-8">
-                    @if($columnIndex === $lastColumn)
-                        {{-- Sidebar Ads at top of the last column --}}
-                        @include('ads.zone', ['zone' => 'sidebar', 'ads' => $sidebarAds ?? collect()])
-                    @endif
+        @if(($sidebarAds ?? collect())->isNotEmpty())
+            <div class="mb-8">
+                @include('ads.zone', ['zone' => 'sidebar', 'ads' => $sidebarAds])
+            </div>
+        @endif
 
-                    @foreach($columnCategories as $cat)
-                        <div>
-                            <div class="flex items-center justify-between mb-4">
-                                <h2 class="text-xl font-bold text-senegal-red flex items-center">
-                                    <span class="mr-2" aria-hidden="true">{{ $categoryIcons[$cat->name_fr] ?? '📰' }}</span>
-                                    {{ $cat->name_fr }}
-                                </h2>
-                                <a href="{{ route('category.show', $cat) }}" class="text-sm text-senegal-red hover:underline">Voir plus →</a>
-                            </div>
-                            <div class="space-y-4">
-                                @forelse($sections[$cat->name_fr] ?? collect() as $article)
-                                    <a href="{{ route('articles.show', $article) }}" class="card-hover block bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
-                                        <h3 class="font-bold text-gray-900 mb-2">{{ $article->title_fr ?? $article->title_en }}</h3>
-                                        <p class="text-gray-600 text-sm line-clamp-2">{{ $article->summary_fr ?? substr(strip_tags($article->content_fr), 100) }}</p>
-                                    </a>
-                                @empty
-                                    <p class="text-sm text-gray-500">{{ __('Aucun article dans cette rubrique pour le moment.') }}</p>
-                                @endforelse
-                            </div>
-                        </div>
-                    @endforeach
-
-                    @if($columnIndex === $lastColumn && $localPicks->isNotEmpty())
-                        {{-- Local Editor Picks: only rendered when such articles exist --}}
-                        <div>
-                            <h2 class="text-xl font-bold text-senegal-green mb-4 flex items-center">📝 Rédaction</h2>
-                            <div class="space-y-4">
-                                @foreach($localPicks as $article)
-                                    <a href="{{ route('articles.show', $article) }}" class="card-hover block bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
-                                        <h3 class="font-bold text-gray-900 mb-2">{{ $article->title_fr ?? $article->title_en }}</h3>
-                                        <p class="text-gray-600 text-sm line-clamp-2">{{ $article->summary_fr ?? substr(strip_tags($article->content_fr), 100) }}</p>
-                                    </a>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
+            @foreach($categories as $cat)
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-bold text-senegal-red flex items-center">
+                            <span class="mr-2" aria-hidden="true">{{ $categoryIcons[$cat->name_fr] ?? '📰' }}</span>
+                            {{ $cat->name_fr }}
+                        </h2>
+                        <a href="{{ route('category.show', $cat) }}" class="text-sm text-senegal-red hover:underline">Voir plus →</a>
+                    </div>
+                    <div class="space-y-4">
+                        @forelse($sections[$cat->name_fr] ?? collect() as $article)
+                            <a href="{{ route('articles.show', $article) }}" class="card-hover block bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                                <h3 class="font-bold text-gray-900 mb-2">{{ $article->title_fr ?? $article->title_en }}</h3>
+                                <p class="text-gray-600 text-sm line-clamp-2">{{ $article->summary_fr ?? substr(strip_tags($article->content_fr), 100) }}</p>
+                            </a>
+                        @empty
+                            <p class="text-sm text-gray-500">{{ __('Aucun article dans cette rubrique pour le moment.') }}</p>
+                        @endforelse
+                    </div>
                 </div>
             @endforeach
+
+            @if($localPicks->isNotEmpty())
+                {{-- Local Editor Picks: only rendered when such articles exist --}}
+                <div>
+                    <h2 class="text-xl font-bold text-senegal-green mb-4 flex items-center">📝 Rédaction</h2>
+                    <div class="space-y-4">
+                        @foreach($localPicks as $article)
+                            <a href="{{ route('articles.show', $article) }}" class="card-hover block bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                                <h3 class="font-bold text-gray-900 mb-2">{{ $article->title_fr ?? $article->title_en }}</h3>
+                                <p class="text-gray-600 text-sm line-clamp-2">{{ $article->summary_fr ?? substr(strip_tags($article->content_fr), 100) }}</p>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 @endsection

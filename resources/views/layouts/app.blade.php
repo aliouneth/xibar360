@@ -16,8 +16,10 @@
         .bg-senegal-red { background-color: var(--senegal-red); }
         .bg-senegal-green { background-color: var(--senegal-green); }
         .bg-senegal-yellow { background-color: var(--senegal-yellow); }
+        .bg-senegal-dark { background-color: var(--senegal-dark); }
         .text-senegal-red { color: var(--senegal-red); }
         .text-senegal-green { color: var(--senegal-green); }
+        .hover\:text-senegal-yellow:hover { color: var(--senegal-yellow); }
         .hover\:shadow-lg:hover { box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
         .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .card-hover:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(0,0,0,0.15); }
@@ -180,7 +182,7 @@
                 </div>
                 <div>
                     <h4 class="font-bold mb-3">Réseaux sociaux</h4>
-                    <div class="flex space-x-3 text-gray-400">
+                    <div class="flex flex-wrap gap-3 text-gray-400">
                         <span class="hover:text-senegal-yellow cursor-pointer">Facebook</span>
                         <span class="hover:text-senegal-yellow cursor-pointer">Twitter</span>
                         <span class="hover:text-senegal-yellow cursor-pointer">Instagram</span>
@@ -190,7 +192,7 @@
                     <h4 class="font-bold mb-3">Newsletter</h4>
                     <p class="text-sm text-gray-400 mb-2">Recevez nos dernières actualités.</p>
                     <form class="flex">
-                        <input type="email" placeholder="Votre email" class="px-3 py-2 rounded-l-lg text-sm flex-grow text-black">
+                        <input type="email" placeholder="Votre email" class="px-3 py-2 rounded-l-lg text-sm flex-grow text-black bg-white">
                         <button class="bg-senegal-red px-4 py-2 rounded-r-lg text-sm font-bold">✓</button>
                     </form>
                 </div>
