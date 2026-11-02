@@ -20,6 +20,11 @@ class ArticleRequest extends FormRequest
         $this->merge([
             'is_published' => $this->boolean('is_published'),
             'is_featured' => $this->boolean('is_featured'),
+            // Summaries are optional. Empty textareas arrive as '' and are
+            // turned into null by ConvertEmptyStringsToNull; normalise them
+            // back to '' so a blank summary can never break the insert.
+            'summary_fr' => $this->input('summary_fr') ?? '',
+            'summary_en' => $this->input('summary_en') ?? '',
         ]);
     }
 
