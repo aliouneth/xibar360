@@ -12,6 +12,16 @@ class SourceRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Accept "on"/"1" from the checkbox and turn it into a real boolean.
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('enabled')) {
+            $this->merge(['enabled' => $this->boolean('enabled')]);
+        }
+    }
+
     public function rules(): array
     {
         return [

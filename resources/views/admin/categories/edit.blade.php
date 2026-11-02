@@ -42,7 +42,7 @@
     </div>
 
     <div class="mb-3 form-check">
-        <input type="checkbox" name="is_active" class="form-check-input" id="is_active" {{ old('is_active', $category->is_active) ? 'checked' : '' }}>
+        <input type="checkbox" name="is_active" value="1" class="form-check-input" id="is_active" {{ old('is_active', $category->is_active) ? 'checked' : '' }}>
         <label class="form-check-label" for="is_active">{{ __('Active') }}</label>
     </div>
 

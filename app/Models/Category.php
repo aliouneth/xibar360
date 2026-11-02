@@ -11,6 +11,10 @@ class Category extends Model
 
     protected $fillable = ['name_fr', 'name_en', 'slug', 'icon', 'description', 'is_active'];
 
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
+
     public function getRouteKeyName(): string
     {
         return 'name_fr';

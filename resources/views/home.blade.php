@@ -7,7 +7,9 @@
 @endsection
 
 @section('content')
-    @php($articlePlaceholder = asset('images/article-placeholder.svg'))
+    @php
+        $articlePlaceholder = asset('images/article-placeholder.svg');
+    @endphp
 
     {{-- Hero Section --}}
     @if($featured->isNotEmpty())
@@ -88,104 +90,70 @@
         @endif
     </div>
 
-    {{-- Three Column Layout --}}
+    {{-- Category sections: every active category gets a block, split evenly
+         across three columns, so a category created in the admin panel shows
+         up here automatically. --}}
+    @php
+        $categoryIcons = [
+            'POLITIQUE' => '🏛️',
+            'ÉCONOMIE' => '💰',
+            'SOCIÉTÉ' => '👥',
+            'SPORT' => '⚽',
+            'AFRIQUE' => '🌍',
+            'MONDE' => '🌐',
+            'PEOPLE' => '🌟',
+        ];
+        $categoryColumns = $categories->values()->split(3);
+        $lastColumn = $categoryColumns->count() - 1;
+    @endphp
+
     <div class="max-w-7xl mx-auto px-4 pb-12">
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {{-- Column 1: POLITIQUE, ÉCONOMIE --}}
-            <div class="lg:col-span-1 space-y-8">
-                @foreach(['POLITIQUE', 'ÉCONOMIE'] as $catName)
-                    @php($cat = $categories->firstWhere('name_fr', $catName))
-                    @if($cat)
+            @foreach($categoryColumns as $columnIndex => $columnCategories)
+                <div class="lg:col-span-1 space-y-8">
+                    @if($columnIndex === $lastColumn)
+                        {{-- Sidebar Ads at top of the last column --}}
+                        @include('ads.zone', ['zone' => 'sidebar', 'ads' => $sidebarAds ?? collect()])
+                    @endif
+
+                    @foreach($columnCategories as $cat)
                         <div>
                             <div class="flex items-center justify-between mb-4">
                                 <h2 class="text-xl font-bold text-senegal-red flex items-center">
-                                    @if($catName === 'POLITIQUE') 🏛️ @else 💰 @endif
+                                    <span class="mr-2" aria-hidden="true">{{ $categoryIcons[$cat->name_fr] ?? '📰' }}</span>
                                     {{ $cat->name_fr }}
                                 </h2>
                                 <a href="{{ route('category.show', $cat) }}" class="text-sm text-senegal-red hover:underline">Voir plus →</a>
                             </div>
                             <div class="space-y-4">
-                                @foreach($sections[$catName] ?? collect() as $article)
+                                @forelse($sections[$cat->name_fr] ?? collect() as $article)
                                     <a href="{{ route('articles.show', $article) }}" class="card-hover block bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
                                         <h3 class="font-bold text-gray-900 mb-2">{{ $article->title_fr ?? $article->title_en }}</h3>
                                         <p class="text-gray-600 text-sm line-clamp-2">{{ $article->summary_fr ?? substr(strip_tags($article->content_fr), 100) }}</p>
                                     </a>
-                                @endforeach
+                                @empty
+                                    <p class="text-sm text-gray-500">{{ __('Aucun article dans cette rubrique pour le moment.') }}</p>
+                                @endforelse
                             </div>
                         </div>
-                    @endif
-                @endforeach
-            </div>
-
-            {{-- Column 2: SOCIÉTÉ, SPORT, AFRIQUE --}}
-            <div class="lg:col-span-1 space-y-8">
-                @foreach(['SOCIÉTÉ', 'SPORT', 'AFRIQUE'] as $catName)
-                    @php($cat = $categories->firstWhere('name_fr', $catName))
-                    @if($cat)
-                        <div>
-                            <div class="flex items-center justify-between mb-4">
-                                <h2 class="text-xl font-bold text-gray-900 flex items-center">
-                                    @if($catName === 'SOCIÉTÉ') 👥 @elseif($catName === 'SPORT') ⚽ @else 🌍 @endif
-                                    {{ $cat->name_fr }}
-                                </h2>
-                                <a href="{{ route('category.show', $cat) }}" class="text-sm text-senegal-red hover:underline">Voir plus →</a>
-                            </div>
-                            <div class="space-y-4">
-                                @foreach($sections[$catName] ?? collect() as $article)
-                                    <a href="{{ route('articles.show', $article) }}" class="card-hover block bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
-                                        <h3 class="font-bold text-gray-900 mb-2">{{ $article->title_fr ?? $article->title_en }}</h3>
-                                        <p class="text-gray-600 text-sm line-clamp-2">{{ $article->summary_fr ?? substr(strip_tags($article->content_fr), 100) }}</p>
-                                    </a>
-                                @endforeach
-                            </div>
-                        </div>
-                    @endif
-                @endforeach
-            </div>
-
-            {{-- Column 3: MONDE, PEOPLE, Local --}}
-            <div class="lg:col-span-1 space-y-8">
-                <div class="lg:col-span-1 space-y-8">
-                    {{-- Sidebar Ads at top --}}
-                    @include('ads.zone', ['zone' => 'sidebar', 'ads' => $sidebarAds ?? collect()])
-                    @foreach(['MONDE', 'PEOPLE'] as $catName)
-                        @php($cat = $categories->firstWhere('name_fr', $catName))
-                        @if($cat)
-                            <div>
-                                <div class="flex items-center justify-between mb-4">
-                                    <h2 class="text-xl font-bold text-gray-900 flex items-center">
-                                        @if($catName === 'MONDE') 🌐 @else 🌟 @endif
-                                        {{ $cat->name_fr }}
-                                    </h2>
-                                    <a href="{{ route('category.show', $cat) }}" class="text-sm text-senegal-red hover:underline">Voir plus →</a>
-                                </div>
-                            <div class="space-y-4">
-                                @foreach($sections[$catName] ?? collect() as $article)
-                                        <a href="{{ route('articles.show', $article) }}" class="card-hover block bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
-                                            <h3 class="font-bold text-gray-900 mb-2">{{ $article->title_fr ?? $article->title_en }}</h3>
-                                            <p class="text-gray-600 text-sm line-clamp-2">{{ $article->summary_fr ?? substr(strip_tags($article->content_fr), 100) }}</p>
-                                        </a>
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endif
                     @endforeach
-                    
-                    {{-- Local Editor Picks: only rendered when such articles exist --}}
-                    @if($localPicks->isNotEmpty())
-                    <div>
-                        <h2 class="text-xl font-bold text-senegal-green mb-4 flex items-center">📝 Rédaction</h2>
-                        <div class="space-y-4">
-                            @foreach($localPicks as $article)
-                                <a href="{{ route('articles.show', $article) }}" class="card-hover block bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
-                                    <h3 class="font-bold text-gray-900 mb-2">{{ $article->title_fr ?? $article->title_en }}</h3>
-                                    <p class="text-gray-600 text-sm line-clamp-2">{{ $article->summary_fr ?? substr(strip_tags($article->content_fr), 100) }}</p>
-                                </a>
-                            @endforeach
+
+                    @if($columnIndex === $lastColumn && $localPicks->isNotEmpty())
+                        {{-- Local Editor Picks: only rendered when such articles exist --}}
+                        <div>
+                            <h2 class="text-xl font-bold text-senegal-green mb-4 flex items-center">📝 Rédaction</h2>
+                            <div class="space-y-4">
+                                @foreach($localPicks as $article)
+                                    <a href="{{ route('articles.show', $article) }}" class="card-hover block bg-white rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow">
+                                        <h3 class="font-bold text-gray-900 mb-2">{{ $article->title_fr ?? $article->title_en }}</h3>
+                                        <p class="text-gray-600 text-sm line-clamp-2">{{ $article->summary_fr ?? substr(strip_tags($article->content_fr), 100) }}</p>
+                                    </a>
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
                     @endif
                 </div>
-            </div>
-</div>
+            @endforeach
+        </div>
+    </div>
 @endsection

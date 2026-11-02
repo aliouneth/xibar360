@@ -115,12 +115,12 @@
 
     <div class="row">
         <div class="col-md-6 mb-3 form-check mt-4">
-            <input type="checkbox" name="is_published" class="form-check-input" id="is_published" {{ old('is_published', false) ? 'checked' : '' }}>
+            <input type="checkbox" name="is_published" value="1" class="form-check-input" id="is_published" {{ old('is_published', false) ? 'checked' : '' }}>
             <label class="form-check-label" for="is_published">{{ __('Published') }}</label>
         </div>
 
         <div class="col-md-6 mb-3 form-check mt-4">
-            <input type="checkbox" name="is_featured" class="form-check-input" id="is_featured" {{ old('is_featured', false) ? 'checked' : '' }}>
+            <input type="checkbox" name="is_featured" value="1" class="form-check-input" id="is_featured" {{ old('is_featured', false) ? 'checked' : '' }}>
             <label class="form-check-label" for="is_featured">{{ __('Featured') }}</label>
         </div>
     </div>

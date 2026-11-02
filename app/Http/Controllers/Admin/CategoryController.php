@@ -23,7 +23,7 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         Category::create($request->validated());
-        return back()->with('success', 'Category created.');
+        return redirect()->route('admin.categories.index')->with('success', 'Category created.');
     }
 
     public function edit(Category $category)
@@ -33,13 +33,13 @@ class CategoryController extends Controller
 
     public function update(CategoryRequest $request, Category $category)
     {
-        $category->update($request->all());
-        return back()->with('success', 'Category updated.');
+        $category->update($request->validated());
+        return redirect()->route('admin.categories.index')->with('success', 'Category updated.');
     }
 
     public function destroy(Category $category)
     {
         $category->delete();
-        return back()->with('success', 'Category deleted.');
+        return redirect()->route('admin.categories.index')->with('success', 'Category deleted.');
     }
 }

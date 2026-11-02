@@ -46,6 +46,7 @@ class DashboardController extends Controller
             ->count('visitor_hash');
 
         return [
+            'visitorsAllTime' => PageView::distinct()->count('visitor_hash'),
             'visitorsToday' => $count(now()->startOfDay()),
             'visitors7Days' => $count(now()->subDays(6)->startOfDay()),
             'visitors15Days' => $count(now()->subDays(14)->startOfDay()),

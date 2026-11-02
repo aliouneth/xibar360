@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Ad;
+use App\Models\Category;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
@@ -46,6 +47,12 @@ class AppServiceProvider extends ServiceProvider
                     'inlineAds' => $adsByZone->get('inline', collect()),
                     'footerAds' => $adsByZone->get('footer', collect()),
                     'wrapperAd' => $adsByZone->get('wrapper', collect())->first(),
+                    // Public navigation/footer are rendered from this list, so a
+                    // category created in the admin panel shows up immediately
+                    // instead of having to be hardcoded into the views.
+                    'navCategories' => Category::where('is_active', true)
+                        ->orderBy('id')
+                        ->get(),
                 ]);
             }
         );

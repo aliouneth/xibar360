@@ -134,7 +134,16 @@
 <p class="text-muted small mb-2">{{ __('Unique visitors per period.') }}</p>
 
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-6 col-lg">
+        <div class="card text-bg-warning mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ __('All time') }}</h5>
+                <h2>{{ number_format($visitorsAllTime ?? 0) }}</h2>
+                <p class="mb-0 small">{{ __('visitors') }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-lg">
         <div class="card text-white bg-primary mb-3">
             <div class="card-body">
                 <h5 class="card-title">{{ __('Today') }}</h5>
@@ -143,7 +152,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-6 col-lg">
         <div class="card text-white bg-success mb-3">
             <div class="card-body">
                 <h5 class="card-title">{{ __('Last 7 days') }}</h5>
@@ -152,7 +161,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-6 col-lg">
         <div class="card text-white bg-info mb-3">
             <div class="card-body">
                 <h5 class="card-title">{{ __('Last 15 days') }}</h5>
@@ -161,7 +170,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <div class="col-6 col-lg">
         <div class="card text-white bg-secondary mb-3">
             <div class="card-body">
                 <h5 class="card-title">{{ __('Last 30 days') }}</h5>

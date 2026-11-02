@@ -11,6 +11,18 @@ class ArticleRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Checked boxes post "on"/"1"; unchecked ones post nothing. Normalise
+     * both to booleans so the article flags always save as 0 or 1.
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'is_published' => $this->boolean('is_published'),
+            'is_featured' => $this->boolean('is_featured'),
+        ]);
+    }
+
     public function rules(): array
     {
         return [

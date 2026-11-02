@@ -11,6 +11,17 @@ class AdRequest extends FormRequest
         return true;
     }
 
+    /**
+     * Normalise the "Active" checkbox: "on"/"1" becomes true, an absent
+     * field becomes false, so the tinyint column never receives "on".
+     */
+    protected function prepareForValidation(): void
+    {
+        $this->merge([
+            'is_active' => $this->boolean('is_active'),
+        ]);
+    }
+
     public function rules(): array
     {
         return [

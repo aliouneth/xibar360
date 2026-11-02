@@ -95,12 +95,22 @@
                     <img src="{{ asset('images/logo.png') }}" alt="Xibar360" class="h-24 w-auto">
                 </a>
                 
-                <nav class="hidden md:flex items-center space-x-6">
-                    <a href="{{ route('home') }}" class="nav-link text-gray-700 hover:text-senegal-red font-medium transition-colors">Accueil</a>
-                    <a href="{{ route('category.show', ['category' => 'POLITIQUE']) }}" class="nav-link text-gray-700 hover:text-senegal-red font-medium transition-colors">Politique</a>
-                    <a href="{{ route('category.show', ['category' => 'ÉCONOMIE']) }}" class="nav-link text-gray-700 hover:text-senegal-red font-medium transition-colors">Économie</a>
-                    <a href="{{ route('category.show', ['category' => 'SPORT']) }}" class="nav-link text-gray-700 hover:text-senegal-red font-medium transition-colors">Sport</a>
-                    <a href="{{ route('category.show', ['category' => 'AFRIQUE']) }}" class="nav-link text-gray-700 hover:text-senegal-red font-medium transition-colors">Afrique</a>
+                <nav class="hidden md:flex items-center space-x-5">
+                    @foreach($navCategories->take(4) as $navCategory)
+                        <a href="{{ route('category.show', $navCategory) }}" class="nav-link text-gray-700 hover:text-senegal-red font-medium transition-colors whitespace-nowrap">{{ $navCategory->name_fr }}</a>
+                    @endforeach
+                    @if($navCategories->count() > 4)
+                        <div class="relative group">
+                            <button type="button" class="nav-link text-gray-700 hover:text-senegal-red font-medium transition-colors flex items-center gap-1 whitespace-nowrap" aria-haspopup="true">
+                                {{ __('Plus') }} <span class="text-xs" aria-hidden="true">▾</span>
+                            </button>
+                            <div class="absolute right-0 top-full mt-2 w-56 max-h-80 overflow-y-auto bg-white rounded-lg shadow-lg border border-gray-100 opacity-0 invisible group-hover:opacity-100 group-hover:visible group-focus-within:opacity-100 group-focus-within:visible transition-all duration-150 z-50">
+                                @foreach($navCategories->slice(4) as $navCategory)
+                                    <a href="{{ route('category.show', $navCategory) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-senegal-red">{{ $navCategory->name_fr }}</a>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endif
                 </nav>
                 
                 <div class="flex items-center space-x-3">
@@ -126,6 +136,15 @@
                     @else
                         <a href="{{ route('login') }}" class="text-sm font-medium text-gray-700 hover:text-senegal-red">Connexion</a>
                     @endauth
+                </div>
+            </div>
+
+            {{-- Mobile category strip: the desktop nav is hidden on small screens. --}}
+            <div class="md:hidden border-t border-gray-100 overflow-x-auto">
+                <div class="flex items-center gap-4 px-4 py-2 text-sm whitespace-nowrap">
+                    @foreach($navCategories as $navCategory)
+                        <a href="{{ route('category.show', $navCategory) }}" class="text-gray-700 hover:text-senegal-red">{{ $navCategory->name_fr }}</a>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -154,10 +173,9 @@
                 <div>
                     <h4 class="font-bold mb-3">Catégories</h4>
                     <ul class="space-y-2 text-sm text-gray-400">
-                        <li><a href="#" class="hover:text-senegal-yellow transition-colors">Politique</a></li>
-                        <li><a href="#" class="hover:text-senegal-yellow transition-colors">Économie</a></li>
-                        <li><a href="#" class="hover:text-senegal-yellow transition-colors">Sport</a></li>
-                        <li><a href="#" class="hover:text-senegal-yellow transition-colors">Afrique</a></li>
+                        @foreach($navCategories as $navCategory)
+                            <li><a href="{{ route('category.show', $navCategory) }}" class="hover:text-senegal-yellow transition-colors">{{ $navCategory->name_fr }}</a></li>
+                        @endforeach
                     </ul>
                 </div>
                 <div>
