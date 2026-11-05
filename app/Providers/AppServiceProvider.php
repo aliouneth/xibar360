@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Ad;
 use App\Models\Category;
+use App\Models\Opinion;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
@@ -46,7 +47,8 @@ class AppServiceProvider extends ServiceProvider
                     'sidebarAds' => $adsByZone->get('sidebar', collect()),
                     'inlineAds' => $adsByZone->get('inline', collect()),
                     'footerAds' => $adsByZone->get('footer', collect()),
-                    'wrapperAd' => $adsByZone->get('wrapper', collect())->first(),
+                     'wrapperAd' => $adsByZone->get('wrapper', collect())->first(),
+                     'recentOpinions' => Opinion::latest()->take(6)->get(),
                     // Public navigation/footer are rendered from this list, so a
                     // category created in the admin panel shows up immediately
                     // instead of having to be hardcoded into the views.

@@ -2,12 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\OpinionController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\ArticleController as AdminArticleController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\AdController as AdminAdController;
+use App\Http\Controllers\Admin\OpinionController as AdminOpinionController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SettingController;
@@ -21,6 +23,7 @@ Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('/articles/{article}', [PublicController::class, 'show'])->name('articles.show');
 Route::get('/category/{category}', [PublicController::class, 'category'])->name('category.show');
 Route::get('/search', [PublicController::class, 'search'])->name('search.results');
+Route::post('/opinion', [OpinionController::class, 'store'])->middleware('throttle:10,1')->name('opinions.store');
 Route::get('/{lang}/articles/{article}', [PublicController::class, 'localizedShow'])->where('lang', 'fr|en')->name('articles.show.lang');
 Route::get('/{lang}/category/{category}', [PublicController::class, 'localizedCategory'])->where('lang', 'fr|en')->name('category.show.lang');
 
@@ -62,6 +65,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/news/refresh', [AdminNewsController::class, 'refresh'])->name('news.refresh');
     Route::post('/articles/{article}/toggle-publish', [AdminArticleController::class, 'togglePublish'])->name('articles.toggle-publish');
     Route::post('/ads/{ad}/toggle', [AdminAdController::class, 'toggle'])->name('ads.toggle');
+Route::resource('opinions', AdminOpinionController::class)->only(['index', 'destroy']);
     Route::post('/users/{user}/toggle', [AdminUserController::class, 'toggle'])->name('users.toggle');
 });
 

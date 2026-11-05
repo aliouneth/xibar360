@@ -23,7 +23,7 @@
             @include('ads.zone', ['zone' => 'header_center', 'ads' => $headerCenterAds ?? collect()])
         </div>
         <div class="header-ads__cell">
-            @include('ads.zone', ['zone' => 'header_right', 'ads' => $headerRightAds ?? collect()])
+            @include('ads.opinion')
         </div>
     </div>
 </div>

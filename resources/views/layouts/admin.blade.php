@@ -24,6 +24,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin.categories.index') }}">{{ __('Categories') }}</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin.sources.index') }}">{{ __('Sources') }}</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin.ads.index') }}">{{ __('Ads') }}</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ route('admin.opinions.index') }}">{{ __('Opinions') }}</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin.users.index') }}">{{ __('Users') }}</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('admin.settings.index') }}">{{ __('Settings') }}</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}">{{ __('View Site') }}</a></li>
