@@ -90,6 +90,65 @@
         @endif
     </div>
 
+    {{-- Reader opinions: sits after the main 48-article feed. --}}
+    <div id="opinions" class="max-w-7xl mx-auto px-4 pb-12">
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-3">
+                <div class="p-6 bg-senegal-dark text-white">
+                    <h2 class="text-xl font-bold mb-2 flex items-center gap-2">
+                        <span aria-hidden="true">💬</span> Votre opinion
+                    </h2>
+                    <p class="text-sm text-gray-300 mb-4">
+                        Qu'aimeriez-vous voir de plus sur Xibar360 ? Partagez vos idées et suggestions.
+                    </p>
+
+                    @if(session('opinion_submitted'))
+                        <p class="mb-4 rounded-lg bg-senegal-green px-3 py-2 text-sm font-medium">
+                            Merci, votre opinion a bien été enregistrée.
+                        </p>
+                    @endif
+
+                    <form method="POST" action="{{ route('opinions.store') }}" class="space-y-3">
+                        @csrf
+                        <textarea name="content" id="home-opinion-content" rows="4" maxlength="250" required
+                                  placeholder="Partagez vos idées, suggestions, fonctionnalités souhaitées..."
+                                  class="w-full rounded-lg border border-gray-200 bg-white p-3 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-red-500">{{ old('content') }}</textarea>
+
+                        @error('content')
+                            <p class="text-sm text-senegal-yellow">{{ $message }}</p>
+                        @enderror
+
+                        <div class="flex items-center justify-between gap-3">
+                            <span id="home-opinion-counter" class="text-xs text-gray-400">0 / 250</span>
+                            <button type="submit" class="rounded-lg bg-senegal-red px-5 py-2 text-sm font-bold text-white transition-colors hover:bg-red-700">
+                                Envoyer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="p-6 lg:col-span-2">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Ce que disent nos lecteurs</h3>
+
+                    @if(($recentOpinions ?? collect())->isEmpty())
+                        <p class="text-sm text-gray-500">
+                            Aucune opinion pour le moment. Soyez le premier à partager la vôtre.
+                        </p>
+                    @else
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            @foreach($recentOpinions as $opinion)
+                                <div class="rounded-lg border border-gray-100 bg-gray-50 p-4">
+                                    <p class="text-sm text-gray-700 whitespace-pre-line">{{ $opinion->content }}</p>
+                                    <p class="mt-3 text-xs text-gray-400">{{ $opinion->created_at?->diffForHumans() }}</p>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{-- Category sections: every active category gets its own cell in one
          grid, so a category created in the admin panel shows up automatically
          and no column is left half empty on narrower screens. --}}
@@ -151,4 +210,24 @@
             @endif
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        (function () {
+            var textarea = document.getElementById('home-opinion-content');
+            var counter = document.getElementById('home-opinion-counter');
+
+            if (!textarea || !counter) {
+                return;
+            }
+
+            function update() {
+                counter.textContent = textarea.value.length + ' / 250';
+            }
+
+            textarea.addEventListener('input', update);
+            update();
+        })();
+    </script>
 @endsection

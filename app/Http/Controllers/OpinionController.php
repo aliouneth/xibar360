@@ -19,6 +19,6 @@ class OpinionController extends Controller
             'user_agent' => substr((string) $request->userAgent(), 0, 500),
         ]);
 
-        return back()->with('opinion_submitted', true);
+        return back()->with('opinion_submitted', true)->withFragment('opinions');
     }
 }
